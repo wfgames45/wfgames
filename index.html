@@ -15,27 +15,44 @@
             <h1>WFGAMES</h1>
         </div>
         
+        <div class="buscador-contenedor">
+            <input type="text" id="barra-busqueda" placeholder="Buscar juego en WFGAMES..." oninput="filtrarJuegos()">
+        </div>
+        
         <div class="menu-derecha">
-            <button id="btn-admin" onclick="autenticarOwner()">🔑 Entrar como Owner</button>
+            <button id="btn-notificaciones" onclick="pedirNotificaciones()">🔔 Activar Avisos</button>
+            <button id="btn-admin" onclick="autenticarOwner()">🔑 Owner</button>
             <div class="carrito-icono">
                 🛒 Carrito: $<span id="total-carrito">0.00</span>
             </div>
         </div>
     </header>
 
-    <main class="tienda-contenedor" id="contenedor-juegos">
-        <div id="tienda-vacia-mensaje">
-            <p>La tienda está actualmente vacía. ¡Inicia sesión como Owner para agregar los primeros videojuegos!</p>
+    <section class="seccion-noticias">
+        <h2>🔥 Últimas Noticias Gamer</h2>
+        <div class="noticias-contenedor">
+            <div class="noticia-tarjeta">
+                <h4>¡Gran Inauguración!</h4>
+                <p>WFGAMES abre sus puertas oficialmente en internet este 2026. ¡Atentos a los próximos lanzamientos!</p>
+            </div>
+            <div class="noticia-tarjeta">
+                <h4>Modo Owner Activo</h4>
+                <p>El administrador ya puede gestionar el catálogo en tiempo real desde cualquier dispositivo.</p>
+            </div>
         </div>
-    </main>
+    </section>
+
+    <h2 class="titulo-seccion">🕹️ Catálogo de Videojuegos</h2>
+    <main class="tienda-contenedor" id="contenedor-juegos">
+        </main>
 
     <section id="panel-agregar-juego" style="display: none;">
         <h2>➕ Agregar Nuevo Videojuego a WFGAMES</h2>
         <div class="formulario">
             <input type="text" id="nuevo-nombre" placeholder="Nombre del juego">
-            <input type="text" id="nueva-categoria" placeholder="Categoría (Ej: Acción, Shooter)">
+            <input type="text" id="nueva-categoria" placeholder="Categoría (Ej: Acción)">
             <input type="number" id="nuevo-precio" placeholder="Precio ($)" step="0.01">
-            <input type="text" id="nuevo-emoji" placeholder="Emoji o icono (Ej: 🎮, 🏎️, ⚔️)">
+            <input type="text" id="nuevo-emoji" placeholder="Emoji (Ej: 🎮)">
             <button onclick="crearNuevoJuego()">Publicar en la Tienda</button>
         </div>
     </section>

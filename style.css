@@ -12,9 +12,10 @@ header {
     justify-content: space-between;
     align-items: center;
     border-bottom: 3px solid #66fcf1;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
-/* Contenedor del Logo y el Nombre */
 .marca-contenedor {
     display: flex;
     align-items: center;
@@ -22,7 +23,7 @@ header {
 }
 
 .logo-tienda {
-    height: 60px; /* Tamaño ideal para que luzca tu logo */
+    height: 50px;
     width: auto;
     border-radius: 5px;
 }
@@ -30,73 +31,123 @@ header {
 header h1 {
     margin: 0;
     color: #66fcf1;
-    font-size: 1.8rem;
-    letter-spacing: 1px;
+    font-size: 1.6rem;
+}
+
+/* Buscador Moderno */
+.buscador-contenedor input {
+    background-color: #0b0c10;
+    border: 2px solid #66fcf1;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    width: 250px;
+    font-size: 0.9rem;
+    outline: none;
 }
 
 .menu-derecha {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
-#btn-admin {
+#btn-admin, #btn-notificaciones {
     background-color: transparent;
     border: 2px solid #66fcf1;
     color: #66fcf1;
-    padding: 10px 15px;
+    padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
-    transition: 0.3s;
 }
 
-#btn-admin:hover {
+#btn-admin:hover, #btn-notificaciones:hover {
     background-color: #66fcf1;
     color: #0b0c10;
 }
 
 .carrito-icono {
-    font-size: 1.2rem;
     background-color: #45f3ff;
     color: #0b0c10;
-    padding: 10px 15px;
+    padding: 8px 15px;
     border-radius: 20px;
     font-weight: bold;
 }
 
+/* Sección de Noticias */
+.seccion-noticias {
+    padding: 20px 40px;
+    background: linear-gradient(180deg, #1f2833, #0b0c10);
+}
+
+.seccion-noticias h2, .titulo-seccion {
+    color: #66fcf1;
+    margin-bottom: 15px;
+}
+
+.titulo-seccion {
+    padding-left: 40px;
+}
+
+.noticias-contenedor {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.noticia-tarjeta {
+    background-color: #1f2833;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #45f3ff;
+    flex: 1;
+    min-width: 250px;
+}
+
+.noticia-tarjeta h4 {
+    margin: 0 0 5px 0;
+    color: white;
+}
+
+.noticia-tarjeta p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Tienda y Tarjetas */
 .tienda-contenedor {
     display: flex;
     justify-content: center;
     gap: 30px;
-    padding: 40px;
+    padding: 20px 40px 40px 40px;
     flex-wrap: wrap;
-}
-
-#tienda-vacia-mensaje {
-    text-align: center;
-    padding: 60px;
-    font-size: 1.2rem;
-    color: #888;
-    border: 2px dashed #333;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 600px;
 }
 
 .tarjeta-juego {
     background-color: #1f2833;
     border-radius: 10px;
     padding: 20px;
-    width: 250px;
+    width: 240px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.btn-favorito {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .imagen-placeholder {
-    font-size: 4rem;
+    font-size: 3.5rem;
     background-color: #0b0c10;
-    padding: 30px;
+    padding: 25px;
     border-radius: 8px;
     margin-bottom: 15px;
 }
@@ -107,13 +158,13 @@ header h1 {
 }
 
 .categoria {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #45f3ff;
     margin-bottom: 15px;
 }
 
 .precio {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #fff;
     margin-bottom: 15px;
@@ -123,8 +174,7 @@ header h1 {
     background-color: #66fcf1;
     color: #0b0c10;
     border: none;
-    padding: 12px 20px;
-    font-size: 1rem;
+    padding: 10px;
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
@@ -139,7 +189,7 @@ header h1 {
     background-color: #ff4757;
     color: white;
     border: none;
-    padding: 8px;
+    padding: 6px;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px;
@@ -147,6 +197,7 @@ header h1 {
     font-weight: bold;
 }
 
+/* Formulario */
 #panel-agregar-juego {
     background-color: #1f2833;
     max-width: 500px;
@@ -174,7 +225,6 @@ header h1 {
     color: white;
     padding: 12px;
     border-radius: 5px;
-    font-size: 1rem;
 }
 
 .formulario button {
@@ -182,7 +232,6 @@ header h1 {
     color: #0b0c10;
     border: none;
     padding: 12px;
-    font-size: 1rem;
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
