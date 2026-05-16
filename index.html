@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WFGAMES - Tienda Oficial</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="marca-contenedor">
+            <img src="logo.png" alt="Logo WFGAMES" class="logo-tienda">
+            <h1>WFGAMES</h1>
+        </div>
+        
+        <div class="menu-derecha">
+            <button id="btn-admin" onclick="autenticarOwner()">🔑 Entrar como Owner</button>
+            <div class="carrito-icono">
+                🛒 Carrito: $<span id="total-carrito">0.00</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="tienda-contenedor" id="contenedor-juegos">
+        <div id="tienda-vacia-mensaje">
+            <p>La tienda está actualmente vacía. ¡Inicia sesión como Owner para agregar los primeros videojuegos!</p>
+        </div>
+    </main>
+
+    <section id="panel-agregar-juego" style="display: none;">
+        <h2>➕ Agregar Nuevo Videojuego a WFGAMES</h2>
+        <div class="formulario">
+            <input type="text" id="nuevo-nombre" placeholder="Nombre del juego">
+            <input type="text" id="nueva-categoria" placeholder="Categoría (Ej: Acción, Shooter)">
+            <input type="number" id="nuevo-precio" placeholder="Precio ($)" step="0.01">
+            <input type="text" id="nuevo-emoji" placeholder="Emoji o icono (Ej: 🎮, 🏎️, ⚔️)">
+            <button onclick="crearNuevoJuego()">Publicar en la Tienda</button>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
