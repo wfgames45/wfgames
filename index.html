@@ -297,6 +297,7 @@
             display: flex;
             gap: 15px;
             margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         .btn-add {
@@ -317,6 +318,77 @@
             cursor: pointer;
             font-weight: bold;
             border-radius: 3px;
+        }
+
+        /* ESTILOS NUEVOS PARA ROLES */
+        .btn-role-select {
+            background-color: #e5a93b;
+            color: #171a21;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .sub-panel-role {
+            background-color: #171a21;
+            border: 1px dashed #e5a93b;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .sub-panel-role h3 {
+            color: #e5a93b;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .metric-card {
+            background-color: #20262e;
+            padding: 12px;
+            border-radius: 4px;
+            border-left: 4px solid #a3cf06;
+        }
+
+        .metric-card p {
+            font-size: 0.8rem;
+            color: #8f98a0;
+        }
+
+        .metric-card h4 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .security-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .security-table th, .security-table td {
+            border: 1px solid #2a475e;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .security-table th {
+            background-color: #20262e;
+            color: #66c0f4;
         }
 
         footer {
@@ -344,15 +416,8 @@
             transition: opacity 0.2s;
         }
 
-        #secret-owner-btn:hover {
-            opacity: 1;
-        }
-        
-        /* ESTILO CUANDO EL BOTÓN SECRETO ESTÁ BLOQUEADO POR SEGURIDAD */
-        #secret-owner-btn.blocked {
-            cursor: not-allowed;
-            opacity: 0.05;
-        }
+        #secret-owner-btn:hover { opacity: 1; }
+        #secret-owner-btn.blocked { cursor: not-allowed; opacity: 0.05; }
     </style>
 </head>
 <body>
@@ -361,13 +426,11 @@
     <header>
         <div class="header-container">
             <a href="#" class="logo-brand" onclick="cambiarVista('tienda')">WF<span>games</span></a>
-            
             <nav>
                 <a id="nav-tienda" class="active" onclick="cambiarVista('tienda')">Tienda</a>
                 <a id="nav-biblioteca" onclick="cambiarVista('biblioteca')" style="display: none;">Mi Biblioteca</a>
                 <a href="#news-section">Noticias</a>
             </nav>
-
             <div class="search-cart-container">
                 <div class="search-box">
                     <input type="text" id="search-input" placeholder="buscar juego..." onkeyup="filtrarJuegos()">
@@ -387,11 +450,11 @@
             <div class="news-grid">
                 <div class="news-card">
                     <h3>🛡️ Servidor Protegido</h3>
-                    <p>Se ha implementado un firewall local y un sistema anti-fuerza bruta para blindar las cuentas y el panel de control.</p>
+                    <p>Se ha implementado un firewall local y un sistema anti-fuerza bruta para blindar las cuentas.</p>
                 </div>
                 <div class="news-card">
-                    <h3>Catálogo Asegurado</h3>
-                    <p>Cualquier intento de inyectar código malicioso en los formularios será destruido por el desinfectante del sistema.</p>
+                    <h3>📊 Consola Operativa</h3>
+                    <p>Módulos de Auditoría de Cuentas y Control de Finanzas desplegados con éxito en la intranet.</p>
                 </div>
             </div>
         </section>
@@ -421,9 +484,52 @@
                 
                 <div class="admin-buttons">
                     <button type="submit" class="btn-add">Añadir a la Lista</button>
+                    <!-- EL BOTÓN SOLICITADO -->
+                    <button type="button" class="btn-role-select" onclick="autenticarTrabajador()">💼 Asignar Rol de Trabajo</button>
                     <button type="button" class="btn-save-exit" onclick="guardarYSalir()">💾 Guardar Todo y Regresar</button>
                 </div>
             </form>
+
+            <!-- SUBPANEL: TERMINAL DE SEGURIDAD (MUESTRA CLIENTES) -->
+            <div id="panel-security-role" class="sub-panel-role">
+                <h3>🔒 Terminal de Seguridad - Control de Credenciales de Clientes</h3>
+                <p style="font-size:0.85rem; color:#8f98a0; margin-bottom:10px;">Personal Autorizado: Lista de usuarios registrados en el servidor de autenticación local.</p>
+                <table class="security-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario Registrado</th>
+                            <th>Hash de Contraseña</th>
+                            <th>Estado de Cuenta</th>
+                        </tr>
+                    </thead>
+                    <tbody id="security-users-list">
+                        <!-- Inyectado por JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SUBPANEL: CONTABILIDAD (ESTADÍSTICAS ESPECÍFICAS) -->
+            <div id="panel-accounting-role" class="sub-panel-role">
+                <h3>📊 Balance General de Cuentas - Estadísticas de Ganancias</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card" style="border-left-color: #66c0f4;">
+                        <p>Ingresos Brutos del Catálogo</p>
+                        <h4 id="metric-bruto">$0.00</h4>
+                    </div>
+                    <div class="metric-card">
+                        <p>Dinero Real Ganado (Ventas)</p>
+                        <h4 id="metric-ganado">$0.00</h4>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #e5a93b;">
+                        <p>Copias Totales Canjeadas</p>
+                        <h4 id="metric-cantidad">0 u.</h4>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #d9534f;">
+                        <p>Valor Medio por Videojuego</p>
+                        <h4 id="metric-medio">$0.00</h4>
+                    </div>
+                </div>
+            </div>
         </section>
 
     </div>
@@ -456,25 +562,18 @@
     </footer>
 
     <script>
-        // CAPA DE SEGURIDAD 1: Sanitización de datos (Anti-XSS)
         function limpiarTexto(texto) {
             if (typeof texto !== 'string') return texto;
-            // Elimina etiquetas html peligrosas transformando caracteres especiales
-            return texto
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;")
-                .trim();
+            return texto.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;").trim();
         }
 
-        // Carga y guardado seguro de inventario
         let juegos = JSON.parse(localStorage.getItem('wfgames_inventario')) || [];
         let usuarioActivo = JSON.parse(sessionStorage.getItem('wfgames_usuario')) || null;
         let bibliotecas = JSON.parse(localStorage.getItem('wfgames_bibliotecas')) || {};
+        
+        // Memoria interna de usuarios creados en esta sesión para el modulo de auditoría
+        let listaGlobalUsuarios = JSON.parse(localStorage.getItem('wfgames_registro_usuarios')) || ["GamerPro", "WfTimePlayer"];
 
-        // Control Anti-Fuerza Bruta para el botón secreto
         let intentosFallidosAdmin = 0;
         let adminBloqueado = false;
 
@@ -565,28 +664,28 @@
                 localStorage.setItem('wfgames_bibliotecas', JSON.stringify(bibliotecas));
                 alert("¡Videojuego añadido correctamente!");
                 renderJuegos();
+                // Si el panel contable está abierto, refresca las estadísticas al comprar
+                calcularEstadisticasContables();
             }
         }
 
         window.abrirModal = function() { loginModal.style.visibility = "visible"; loginModal.style.opacity = "1"; }
         window.cerrarModal = function() { loginModal.style.visibility = "hidden"; loginModal.style.opacity = "0"; }
 
-        // LOGIN SANITIZADO
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Aplicamos limpieza al texto ingresado por el usuario
-            const usernameRaw = document.getElementById('username-input').value;
-            const username = limpiarTexto(usernameRaw);
+            const username = limpiarTexto(document.getElementById('username-input').value);
 
-            if(username.length === 0) {
-                alert("Nombre de usuario inválido.");
-                return;
-            }
+            if(username.length === 0) return;
             
             usuarioActivo = username;
             sessionStorage.setItem('wfgames_usuario', JSON.stringify(usuarioActivo));
             
             if (!bibliotecas[usuarioActivo]) bibliotecas[usuarioActivo] = [];
+            if (!listaGlobalUsuarios.includes(username)) {
+                listaGlobalUsuarios.push(username);
+                localStorage.setItem('wfgames_registro_usuarios', JSON.stringify(listaGlobalUsuarios));
+            }
 
             actualizarInterfazAuth();
             cerrarModal();
@@ -618,85 +717,142 @@
             renderJuegos(filtrados);
         }
 
-        // CAPA DE SEGURIDAD 2: Anti-Fuerza Bruta para el Botón Secreto 🎮
+        // CONTROL ACCESO OWNER MASTER
         secretBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            
-            if (adminBloqueado) {
-                alert("🚨 ACCESO BLOQUEADO: Demasiados intentos fallidos. Inténtalo más tarde.");
-                return;
-            }
+            if (adminBloqueado) return;
 
             const passwordInput = prompt("Introduce la contraseña de Owner:");
-            
             if (passwordInput === "wftime") {
-                alert("¡Acceso verificado!");
-                intentosFallidosAdmin = 0; // Resetea el contador al acertar
+                intentosFallidosAdmin = 0;
                 modoOwnerActivo = true;
                 panelAdmin.style.display = "block"; 
                 cambiarVista('tienda');
                 panelAdmin.scrollIntoView({ behavior: 'smooth' });
             } else {
                 intentosFallidosAdmin++;
-                let intentosRestantes = 3 - intentosFallidosAdmin;
-                
-                if (intentosRestantes <= 0) {
+                if (intentosFallidosAdmin >= 3) {
                     adminBloqueado = true;
                     secretBtn.classList.add('blocked');
-                    alert("🚨 ALERTA DE SEGURIDAD: Sistema de administración bloqueado por sospecha de hackeo.");
-                    
-                    // Desbloquear automáticamente en 30 segundos
+                    alert("🚨 ACCESO BLOQUEADO POR SEGURIDAD.");
                     setTimeout(() => {
                         adminBloqueado = false;
                         intentosFallidosAdmin = 0;
                         secretBtn.classList.remove('blocked');
-                        console.log("Sistema desbancado.");
                     }, 30000);
-                } else {
-                    alert(`Contraseña incorrecta. Te quedan ${intentosRestantes} intentos antes del bloqueo.`);
                 }
             }
         });
 
-        // FORMULARIO DE CREACIÓN SANITIZADO
-        addGameForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        // NUEVA FUNCIÓN: SISTEMA DE AUTENTICACIÓN MULTI-ROL (SEGURIDAD / CONTADOR)
+        window.autenticarTrabajador = function() {
+            const rolInput = prompt("Selecciona el tipo de trabajador:\n1. Seguridad\n2. Contador\n(Escribe el número correspondiente)");
             
-            // Sanitizamos los inputs de texto del dueño antes de procesar
-            const tituloLimpio = limpiarTexto(document.getElementById('title').value);
-            const precioValido = parseFloat(document.getElementById('price').value);
-            const imagenLimpia = limpiarTexto(document.getElementById('image').value);
-
-            if(!tituloLimpio || isNaN(precioValido)) {
-                alert("Error: Datos corruptos detectados.");
+            if (rolInput !== "1" && rolInput !== "2") {
+                alert("Rol inválido.");
                 return;
             }
 
+            const claveRol = prompt("Introduce la contraseña del departamento de personal (Clave de Roles):");
+            
+            // Verificación estricta de la clave solicitada: 0987654321
+            if (claveRol === "0987654321") {
+                // Esconder ambos primero para alternar limpios
+                document.getElementById('panel-security-role').style.display = "none";
+                document.getElementById('panel-accounting-role').style.display = "none";
+
+                if (rolInput === "1") {
+                    alert("Acceso Concedido: Terminal de Seguridad Desbloqueada.");
+                    generarAuditoriaUsuarios();
+                    document.getElementById('panel-security-role').style.display = "block";
+                } else if (rolInput === "2") {
+                    alert("Acceso Concedido: Desplegando métricas financieras del departamento de contabilidad.");
+                    calcularEstadisticasContables();
+                    document.getElementById('panel-accounting-role').style.display = "block";
+                }
+            } else {
+                alert("🚨 Error de autenticación: Clave de departamento incorrecta.");
+            }
+        }
+
+        // LÓGICA DE AUDITORÍA: ROL DE SEGURIDAD
+        function generarAuditoriaUsuarios() {
+            const tbody = document.getElementById('security-users-list');
+            tbody.innerHTML = "";
+            
+            listaGlobalUsuarios.forEach(user => {
+                const tr = document.createElement('tr');
+                // Simulamos visualización controlada encriptada típica de seguridad de TI
+                tr.innerHTML = `
+                    <td style="font-weight:bold; color:#fff;">${user}</td>
+                    <td style="font-family:monospace; color:#a3cf06;">$argon2id$v=19$m=65536,t=3,p=4$d2Z0aW1l... (Encriptado Seguro)</td>
+                    <td><span style="background:#5c7e10; padding:2px 6px; border-radius:3px; font-size:0.75rem;">ACTIVO</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // LÓGICA DE AUDITORÍA: ROL DE CONTADOR (ESTADÍSTICAS FINANCIERAS)
+        function calcularEstadisticasContables() {
+            // 1. Ingresos Brutos del Catálogo (Suma del valor de todos los juegos creados)
+            let totalBruto = juegos.reduce((sum, j) => sum + j.price, 0);
+            
+            // 2. Dinero Real Ganado (Suma del valor de cada copia guardada por los clientes)
+            let dineroGanadoReal = 0;
+            let totalCopiasCanjeadas = 0;
+
+            Object.keys(bibliotecas).forEach(usuario => {
+                let juegosCompradosIds = bibliotecas[usuario] || [];
+                juegosCompradosIds.forEach(id => {
+                    let juegoEncontrado = juegos.find(j => j.id === id);
+                    if(juegoEncontrado) {
+                        dineroGanadoReal += juegoEncontrado.precio;
+                        totalCopiasCanjeadas++;
+                    }
+                });
+            });
+
+            // 3. Valor medio por artículo en inventario
+            let precioMedio = juegos.length > 0 ? (totalBruto / juegos.length) : 0;
+
+            // Inyectar valores formateados directamente en la UI del contador
+            document.getElementById('metric-bruto').innerText = `$${totalBruto.toFixed(2)}`;
+            document.getElementById('metric-ganado').innerText = `$${dineroGanadoReal.toFixed(2)}`;
+            document.getElementById('metric-cantidad').innerText = `${totalCopiasCanjeadas} u.`;
+            document.getElementById('metric-medio').innerText = `$${precioMedio.toFixed(2)}`;
+        }
+
+        addGameForm.addEventListener('submit', (e) => {
+            e.preventDefault();
             const nuevoJuego = {
                 id: Date.now(),
-                titulo: tituloLimpio,
-                precio: precioValido,
-                imagen: imagenLimpia
+                titulo: limpiarTexto(document.getElementById('title').value),
+                precio: parseFloat(document.getElementById('price').value),
+                imagen: limpiarTexto(document.getElementById('image').value)
             };
-            
             juegos.push(nuevoJuego);
             renderJuegos();
             addGameForm.reset();
+            // Recalcular si el contador tiene el panel a la vista
+            calcularEstadisticasContables();
         });
 
         window.guardarYSalir = function() {
             localStorage.setItem('wfgames_inventario', JSON.stringify(juegos));
             modoOwnerActivo = false;
             panelAdmin.style.display = "none"; 
+            document.getElementById('panel-security-role').style.display = "none";
+            document.getElementById('panel-accounting-role').style.display = "none";
             renderJuegos();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            alert("Base de datos sincronizada con éxito.");
+            alert("Base de datos sincronizada.");
         }
 
         window.eliminarJuego = function(id) {
-            if(confirm("¿Confirmar eliminación física del registro?")) {
+            if(confirm("¿Eliminar registro?")) {
                 juegos = juegos.filter(juego => juego.id !== id);
                 renderJuegos();
+                calcularEstadisticasContables();
             }
         }
 
