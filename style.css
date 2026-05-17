@@ -1,3 +1,4 @@
+/* GENERALES */
 body {
     margin: 0;
     padding: 0;
@@ -76,9 +77,8 @@ body {
     color: #fff;
 }
 
-/* DISEÑO SIN JUEGOS */
+/* MENSAJE CATÁLOGO VACÍO */
 .no-games-message {
-    grid-column: 1 / -1;
     text-align: center;
     padding: 40px;
     background-color: #16202d;
@@ -91,7 +91,7 @@ body {
     font-size: 15px;
 }
 
-/* CAPAS SUPERIORES (MODALES) */
+/* MODALES / CAPAS SUPERIORES */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -99,7 +99,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.85);
-    display: none; /* Controlado por JS */
+    display: none; /* JS cambia esto a 'flex' */
     justify-content: center;
     align-items: center;
     z-index: 10000;
@@ -237,7 +237,7 @@ body {
     text-decoration: underline;
 }
 
-/* TARJETA ADMINISTRATIVA */
+/* TARJETA ADMINISTRATIVA (PANEL OWNER) */
 .admin-card {
     background-color: #0b0e14;
     border: 2px solid #2a3f5a;
@@ -272,7 +272,7 @@ body {
 .stat-box p { margin: 0; font-size: 20px; font-weight: bold;}
 .status-ok { color: #47b28f; }
 
-/* DISPARADOR SECRETO MANDO */
+/* CONTROL SECRETO MANDO */
 .admin-access-trigger {
     position: fixed;
     bottom: 15px;
