@@ -15,6 +15,7 @@
             <nav class="nav-links">
                 <a href="#" class="active">TIENDA</a>
                 <a href="#">SOPORTE</a>
+                <!-- Botón de apertura -->
                 <a href="#" id="open-login-btn">INICIAR SESIÓN</a>
             </nav>
             <div class="cart-status">
@@ -32,7 +33,7 @@
             </div>
         </section>
 
-        <!-- Catálogo sin juegos de prueba -->
+        <!-- Catálogo sin juegos de prueba de modo Steam -->
         <section class="games-grid" id="games-grid">
             <div class="no-games-message">
                 <p>No hay juegos disponibles en este momento. Próximamente se añadirán novedades.</p>
@@ -95,12 +96,104 @@
         </div>
     </div>
 
-    <!-- BOTÓN SECRETO PARA EL DUEÑO (Mando escondido abajo a la derecha) -->
+    <!-- BOTÓN SECRETO PARA EL DUEÑO (Mando minimalista oculto abajo a la derecha) -->
     <div class="admin-access-trigger">
         <span id="secret-admin-trigger">🎮</span>
     </div>
 
-    <!-- Conexión al script -->
-    <script src="app.js"></script>
+
+    <!-- ======================================================== -->
+    <!--          LÓGICA JAVASCRIPT INTEGRADA (ANTI-FALLOS)       -->
+    <!-- ======================================================== -->
+    <script>
+        // --- FUNCIÓN MAESTRA DEL MODO DUEÑO ---
+        function verificarAccesoMaster(passwordIntroducido) {
+            if (passwordIntroducido === "wftime") {
+                document.getElementById("login-modal").style.display = "none"; 
+                document.getElementById("admin-panel").style.display = "flex"; 
+            } else {
+                alert("Contraseña de administrador incorrecta.");
+            }
+        }
+
+        // 1. Abrir modal de Login (Desde la navbar)
+        const botonAbrirLogin = document.getElementById("open-login-btn");
+        if (botonAbrirLogin) {
+            botonAbrirLogin.onclick = function(e) {
+                e.preventDefault();
+                document.getElementById("login-modal").style.display = "flex";
+            };
+        }
+
+        // 2. Cerrar modal de Login (Botón X)
+        const botonCerrarLogin = document.getElementById("close-login-btn");
+        if (botonCerrarLogin) {
+            botonCerrarLogin.onclick = function() {
+                document.getElementById("login-modal").style.display = "none";
+            };
+        }
+
+        // 3. Formulario tradicional (Login normal o por clave secreta)
+        const formularioLogin = document.getElementById("form-login");
+        if (formularioLogin) {
+            formularioLogin.onsubmit = function(e) {
+                e.preventDefault();
+                const usuarioInput = document.getElementById("login-email").value;
+                const claveInput = document.getElementById("login-password").value;
+
+                if (claveInput === "wftime" || usuarioInput === "admin") {
+                    verificarAccesoMaster(claveInput);
+                } else {
+                    alert("Sesión normal iniciada para el usuario: " + usuarioInput);
+                    document.getElementById("login-modal").style.display = "none";
+                }
+            };
+        }
+
+        // 4. Clic en el Control Secreto 🎮
+        const disparadorSecreto = document.getElementById("secret-admin-trigger");
+        if (disparadorSecreto) {
+            disparadorSecreto.onclick = function() {
+                const claveAdmin = prompt("WFGAMES SECURITY\nIntroduce la clave del Dueño:");
+                if (claveAdmin) {
+                    verificarAccesoMaster(claveAdmin);
+                }
+            };
+        }
+
+        // 5. Cerrar Panel de Administrador
+        const botonCerrarAdmin = document.getElementById("close-admin-btn");
+        if (botonCerrarAdmin) {
+            botonCerrarAdmin.onclick = function() {
+                document.getElementById("admin-panel").style.display = "none";
+            };
+        }
+
+        // 6. Botón de Google (OAuth Firebase Modo Simulado)
+        const botonGoogleAuth = document.getElementById("btn-google-auth");
+        if (botonGoogleAuth) {
+            botonGoogleAuth.onclick = function() {
+                alert("Sincronizando con los servidores de Google mediante Firebase Auth...\n(Flujo de cuenta simulado)");
+                alert("¡Vínculo correcto! Bienvenido de vuelta.");
+                document.getElementById("login-modal").style.display = "none";
+            };
+        }
+
+        // 7. Enlace para recuperación de cuentas
+        const linkRecuperarCuenta = document.getElementById("link-forgot-pass");
+        if (linkRecuperarCuenta) {
+            linkRecuperarCuenta.onclick = function(e) {
+                e.preventDefault();
+                const correoIngresado = prompt("SOPORTE WFGAMES\n\nIngresa tu correo de Google registrado para enviarte las instrucciones de recuperación:");
+                if (correoIngresado) {
+                    if (correoIngresado.includes("@")) {
+                        alert("Proceso completado. Se ha enviado un enlace seguro a: " + correoIngresado);
+                    } else {
+                        alert("La dirección ingresada no parece un formato de correo válido.");
+                    }
+                }
+            };
+        }
+    </script>
 </body>
 </html>

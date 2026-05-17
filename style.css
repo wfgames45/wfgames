@@ -1,4 +1,4 @@
-/* GENERALES */
+/* ESTILOS GENERALES */
 body {
     margin: 0;
     padding: 0;
@@ -48,7 +48,7 @@ body {
     font-size: 14px;
 }
 
-/* CONTENEDOR DE TIENDA */
+/* TIENDA / BUSCADOR */
 .store-container {
     max-width: 1200px;
     margin: 30px auto;
@@ -77,7 +77,7 @@ body {
     color: #fff;
 }
 
-/* MENSAJE CATÁLOGO VACÍO */
+/* SECCIÓN MODO STEAM SIN JUEGOS */
 .no-games-message {
     text-align: center;
     padding: 40px;
@@ -91,7 +91,7 @@ body {
     font-size: 15px;
 }
 
-/* MODALES / CAPAS SUPERIORES */
+/* OVERLAYS (FONDOS PARA LAS CAPAS FLOTANTES) */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -99,13 +99,13 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.85);
-    display: none; /* JS cambia esto a 'flex' */
+    display: none; /* JavaScript cambia esto a 'flex' */
     justify-content: center;
     align-items: center;
     z-index: 10000;
 }
 
-/* TARJETA DE LOGIN */
+/* CAJA DE INICIO DE SESIÓN */
 .login-card {
     background-color: #171a21;
     border: 1px solid #2a3f5a;
@@ -180,7 +180,7 @@ body {
     border-radius: 3px;
 }
 
-/* SEPARADORES Y GOOGLE */
+/* SEPARADORES Y ESTILO GOOGLE */
 .auth-separator {
     text-align: center;
     margin: 20px 0;
@@ -237,7 +237,7 @@ body {
     text-decoration: underline;
 }
 
-/* TARJETA ADMINISTRATIVA (PANEL OWNER) */
+/* PANEL DEL DUEÑO (MÓDULO ADMIN) */
 .admin-card {
     background-color: #0b0e14;
     border: 2px solid #2a3f5a;
@@ -272,7 +272,7 @@ body {
 .stat-box p { margin: 0; font-size: 20px; font-weight: bold;}
 .status-ok { color: #47b28f; }
 
-/* CONTROL SECRETO MANDO */
+/* REPARACIÓN DEL DETONADOR DEL MANDO SECRETO */
 .admin-access-trigger {
     position: fixed;
     bottom: 15px;
@@ -282,12 +282,13 @@ body {
 
 #secret-admin-trigger {
     cursor: pointer;
-    opacity: 0.2;
-    font-size: 20px;
+    opacity: 0.2; /* Sutil y escondido en la esquina */
+    font-size: 22px;
     user-select: none;
     transition: opacity 0.2s;
+    display: inline-block;
 }
 
 #secret-admin-trigger:hover {
-    opacity: 1;
+    opacity: 1; /* Al pasar el mouse brilla */
 }
