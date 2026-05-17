@@ -202,6 +202,7 @@
             cursor: pointer;
             font-size: 0.8rem;
             display: none; 
+            z-index: 10;
         }
 
         /* SECCIÓN MODO OWNER (OCULTA ABAJO) */
@@ -238,14 +239,35 @@
             border-radius: 3px;
         }
 
+        .admin-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
         .btn-add {
-            background-color: #a3cf06; 
+            background-color: #67c1f5; 
             color: #fff;
             border: none;
             padding: 10px 15px;
             cursor: pointer;
             font-weight: bold;
             border-radius: 3px;
+        }
+
+        /* NUEVO BOTÓN PARA GUARDAR TODO Y SALIR */
+        .btn-save-exit {
+            background-color: #5c7e10; /* Verde Steam */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .btn-save-exit:hover {
+            background-color: #7a9e1a;
         }
 
         footer {
@@ -264,18 +286,17 @@
             gap: 8px;
         }
 
-        /* EL NUEVO BOTÓN EMOJI SECRETO */
         #secret-owner-btn {
             text-decoration: none;
             font-size: 1.1rem;
             cursor: pointer;
             user-select: none;
-            opacity: 0.15; /* Se ve muy transparente para camuflarse con las letras */
+            opacity: 0.15; 
             transition: opacity 0.2s;
         }
 
         #secret-owner-btn:hover {
-            opacity: 1; /* Brilla por completo solo si pones el cursor encima */
+            opacity: 1; 
         }
     </style>
 </head>
@@ -342,13 +363,18 @@
                     <label for="image">Nombre de la imagen local:</label>
                     <input type="text" id="image" required placeholder="Ej. eldenring.jpg">
                 </div>
-                <button type="submit" class="btn-add">Añadir a la Tienda</button>
+                
+                <div class="admin-buttons">
+                    <button type="submit" class="btn-add">Añadir a la Lista</button>
+                    <!-- EL BOTÓN QUE PROPUSISTE -->
+                    <button type="button" class="btn-save-exit" onclick="guardarYSalir()">💾 Guardar Todo y Regresar</button>
+                </div>
             </form>
         </section>
 
     </div>
 
-    <!-- FOOTER MODIFICADO CON EL EMOJI 🎮 -->
+    <!-- FOOTER -->
     <footer>
         <p>
             &copy; 2026 WFgames. Todos los derechos reservados.
@@ -411,6 +437,7 @@
             }
         });
 
+        // Añadir a la cola temporal del catálogo
         addGameForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const nuevoJuego = {
@@ -420,16 +447,30 @@
                 imagen: document.getElementById('image').value
             };
             juegos.push(nuevoJuego);
-            localStorage.setItem('wfgames_inventario', JSON.stringify(juegos));
             renderJuegos();
             addGameForm.reset();
-            alert("¡Juego agregado!");
         });
+
+        // FUNCIÓN NUEVA: GUARDA LOS CAMBIOS EN EL DISCO Y CIERRA EL MODO OWNER
+        window.guardarYSalir = function() {
+            // Guarda permanentemente en el navegador
+            localStorage.setItem('wfgames_inventario', JSON.stringify(juegos));
+            
+            // Apaga el modo admin
+            modoOwnerActivo = false;
+            panelAdmin.style.display = "none"; 
+            
+            // Vuelve a pintar el catálogo para quitar los botones de borrado
+            renderJuegos();
+            
+            // Sube la pantalla suavemente para ver los resultados como cliente normal
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            alert("¡Cambios guardados con éxito! Regresando al modo cliente.");
+        }
 
         window.eliminarJuego = function(id) {
             if(confirm("¿Eliminar juego?")) {
                 juegos = juegos.filter(juego => juego.id !== id);
-                localStorage.setItem('wfgames_inventario', JSON.stringify(juegos));
                 renderJuegos();
             }
         }
