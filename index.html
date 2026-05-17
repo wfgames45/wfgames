@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WFgames - Tienda de Videojuegos</title>
     <style>
-        /* ESTILOS INSPIRADOS EN STEAM (MINIMALISTA Y OSCURO) */
+        /* ESTILOS INSPIRADOS EN STEAM */
         * {
             margin: 0;
             padding: 0;
@@ -14,7 +14,7 @@
         }
 
         body {
-            background-color: #1b2838; /* Azul oscuro clásico de Steam */
+            background-color: #1b2838; 
             color: #c7d5e0;
             display: flex;
             flex-direction: column;
@@ -37,7 +37,18 @@
             gap: 15px;
         }
 
-        /* BARRA DE NAVEGACIÓN PRINCIPAL */
+        .logo-brand {
+            color: #fff;
+            letter-spacing: 2px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .logo-brand span {
+            color: #66c0f4;
+        }
+
         nav {
             display: flex;
             gap: 20px;
@@ -50,23 +61,16 @@
             font-size: 0.9rem;
             font-weight: bold;
             letter-spacing: 1px;
-            transition: color 0.2s;
         }
 
         nav a:hover, nav a.active {
             color: #fff;
         }
 
-        /* SECCIÓN DE BÚSQUEDA Y CARRITO */
         .search-cart-container {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-left: auto; /* Empuja el buscador a la derecha ya que no hay logo */
-        }
-
-        .search-box {
-            position: relative;
         }
 
         .search-box input {
@@ -101,7 +105,6 @@
             width: 100%;
         }
 
-        /* SECCIÓN DE NOTICIAS DE VIDEOJUEGOS */
         #news-section {
             background: linear-gradient(rgba(22, 32, 45, 0.8), #16202d);
             border: 1px solid #2a475e;
@@ -127,7 +130,6 @@
         .news-card h3 {
             color: #fff;
             font-size: 1rem;
-            margin-bottom: 5px;
         }
 
         .news-card p {
@@ -135,7 +137,6 @@
             color: #8f98a0;
         }
 
-        /* CATÁLOGO DE JUEGOS */
         h2.section-title {
             margin-bottom: 20px;
             color: #fff;
@@ -155,12 +156,7 @@
             border: 1px solid rgba(0,0,0,0.4);
             border-radius: 4px;
             overflow: hidden;
-            transition: transform 0.2s;
             position: relative;
-        }
-
-        .game-card:hover {
-            transform: translateY(-5px);
         }
 
         .game-card img {
@@ -176,7 +172,6 @@
         .game-title {
             font-size: 1.1rem;
             color: #fff;
-            margin-bottom: 8px;
         }
 
         .game-price {
@@ -193,7 +188,6 @@
             width: 100%;
             padding: 8px;
             cursor: pointer;
-            border-radius: 2px;
         }
 
         .btn-delete-game {
@@ -210,7 +204,7 @@
             display: none; 
         }
 
-        /* SECCIÓN MODO OWNER UBICADA ABAJO */
+        /* SECCIÓN MODO OWNER (OCULTA ABAJO) */
         #panel-admin {
             background-color: #2a475e;
             border: 1px solid #66c0f4;
@@ -218,7 +212,7 @@
             border-radius: 4px;
             margin-top: 30px;
             margin-bottom: 20px;
-            display: none; /* Se activa abajo solo con la clave */
+            display: none; 
         }
 
         #panel-admin h2 {
@@ -233,7 +227,6 @@
         .form-group label {
             display: block;
             margin-bottom: 5px;
-            font-size: 0.9rem;
         }
 
         .form-group input {
@@ -255,7 +248,6 @@
             border-radius: 3px;
         }
 
-        /* FOOTER CON EL BOTÓN OCULTO */
         footer {
             background-color: #171a21;
             text-align: center;
@@ -266,23 +258,34 @@
         footer p {
             font-size: 0.9rem;
             color: #556772;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
         }
 
+        /* EL NUEVO BOTÓN EMOJI SECRETO */
         #secret-owner-btn {
-            color: #171a21; /* Completamente camuflado */
             text-decoration: none;
-            font-size: 0.9rem;
-            cursor: default;
-            margin-left: 2px;
+            font-size: 1.1rem;
+            cursor: pointer;
             user-select: none;
+            opacity: 0.15; /* Se ve muy transparente para camuflarse con las letras */
+            transition: opacity 0.2s;
+        }
+
+        #secret-owner-btn:hover {
+            opacity: 1; /* Brilla por completo solo si pones el cursor encima */
         }
     </style>
 </head>
 <body>
 
-    <!-- ENCABEZADO SIN LOGO -->
+    <!-- ENCABEZADO -->
     <header>
         <div class="header-container">
+            <a href="#" class="logo-brand">WF<span>games</span></a>
+            
             <nav>
                 <a href="#" class="active">Tienda</a>
                 <a href="#news-section">Noticias</a>
@@ -300,30 +303,30 @@
 
     <div class="container">
         
-        <!-- SECCIÓN DE NOTICIAS -->
+        <!-- NOTICIAS -->
         <section id="news-section">
             <h2 class="section-title">Últimas Noticias</h2>
             <div class="news-grid">
                 <div class="news-card">
                     <h3>¡WFgames Actualiza su Plataforma!</h3>
-                    <p>Hemos mejorado el sistema de inventario interno del servidor. Los administradores ahora cuentan con accesos secretos actualizados.</p>
+                    <p>Sistema de administración mudado a la zona baja del servidor con llave de seguridad encriptada.</p>
                 </div>
                 <div class="news-card">
                     <h3>Próximos Lanzamientos 2026</h3>
-                    <p>Mantente atento a la tienda esta semana, se añadirán los títulos competitivos más esperados de la temporada.</p>
+                    <p>Haz clic en el control de videojuegos abajo para cargar los títulos del catálogo.</p>
                 </div>
             </div>
         </section>
 
-        <!-- SECCIÓN DE LA TIENDA (EMPIEZA VACÍA) -->
+        <!-- TIENDA VACÍA -->
         <main>
             <h2 class="section-title">Juegos Destacados</h2>
             <div class="games-grid" id="games-container">
-                <!-- Los juegos que agregues aparecerán aquí -->
+                <!-- Vacío al inicio -->
             </div>
         </main>
 
-        <!-- PANEL DE ADMINISTRACIÓN (MUDADO ABAJO DEL TODO) -->
+        <!-- PANEL OWNER ABAJO -->
         <section id="panel-admin">
             <h2>🛠️ Modo Owner - Panel de Inventario</h2>
             <form id="add-game-form">
@@ -345,14 +348,15 @@
 
     </div>
 
-    <!-- PIE DE PÁGINA -->
+    <!-- FOOTER MODIFICADO CON EL EMOJI 🎮 -->
     <footer>
-        <p>&copy; 2026 WFgames. Todos los derechos reservados.<a href="#" id="secret-owner-btn">.</a></p>
+        <p>
+            &copy; 2026 WFgames. Todos los derechos reservados.
+            <a href="#" id="secret-owner-btn">🎮</a>
+        </p>
     </footer>
 
-    <!-- JAVASCRIPT -->
     <script>
-        // EL INVENTARIO AHORA EMPIEZA COMPLETAMENTE VACÍO []
         let juegos = JSON.parse(localStorage.getItem('wfgames_inventario')) || [];
 
         const gamesContainer = document.getElementById('games-container');
@@ -362,19 +366,16 @@
         
         let modoOwnerActivo = false;
 
-        // Renderizar catálogo
         function renderJuegos(juegosFiltrados = juegos) {
             gamesContainer.innerHTML = "";
-            
             if(juegosFiltrados.length === 0) {
-                gamesContainer.innerHTML = "<p style='color: #8f98a0;'>No hay juegos disponibles en la tienda actualmente.</p>";
+                gamesContainer.innerHTML = "<p style='color: #8f98a0;'>No hay juegos disponibles. Activa el modo owner abajo para añadir títulos.</p>";
                 return;
             }
 
             juegosFiltrados.forEach(juego => {
                 const card = document.createElement('div');
                 card.classList.add('game-card');
-                
                 card.innerHTML = `
                     <button class="btn-delete-game" onclick="eliminarJuego(${juego.id})" style="display: ${modoOwnerActivo ? 'block' : 'none'}">X</button>
                     <img src="${juego.imagen}" alt="${juego.titulo}" onerror="this.src='https://via.placeholder.com/300x180/16202d/c7d5e0?text=Portada+Local'">
@@ -388,31 +389,28 @@
             });
         }
 
-        // Buscador
         function filtrarJuegos() {
             const query = document.getElementById('search-input').value.toLowerCase();
             const filtrados = juegos.filter(juego => juego.titulo.toLowerCase().includes(query));
             renderJuegos(filtrados);
         }
 
-        // Activación secreta abajo con contraseña "wftime"
+        // CLIC EN EL CONTROL 🎮
         secretBtn.addEventListener('click', (e) => {
             e.preventDefault();
             const passwordInput = prompt("Introduce la contraseña de Owner:");
             
             if (passwordInput === "wftime") {
-                alert("¡Acceso verificado! Panel Owner desbloqueado al final de la página.");
+                alert("¡Acceso verificado! Modo Owner activado abajo.");
                 modoOwnerActivo = true;
-                panelAdmin.style.display = "block"; // Se muestra abajo
+                panelAdmin.style.display = "block"; 
                 renderJuegos();
-                // Desplaza la vista suavemente hacia abajo para ver el formulario
                 panelAdmin.scrollIntoView({ behavior: 'smooth' });
             } else {
-                alert("Contraseña incorrecta. Acceso denegado.");
+                alert("Contraseña incorrecta.");
             }
         });
 
-        // Agregar juego
         addGameForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const nuevoJuego = {
@@ -421,25 +419,21 @@
                 precio: parseFloat(document.getElementById('price').value),
                 imagen: document.getElementById('image').value
             };
-            
             juegos.push(nuevoJuego);
             localStorage.setItem('wfgames_inventario', JSON.stringify(juegos));
-            
             renderJuegos();
             addGameForm.reset();
-            alert("¡Juego agregado con éxito!");
+            alert("¡Juego agregado!");
         });
 
-        // Eliminar juego
         window.eliminarJuego = function(id) {
-            if(confirm("¿Seguro que quieres eliminar este juego?")) {
+            if(confirm("¿Eliminar juego?")) {
                 juegos = juegos.filter(juego => juego.id !== id);
                 localStorage.setItem('wfgames_inventario', JSON.stringify(juegos));
                 renderJuegos();
             }
         }
 
-        // Carga inicial
         renderJuegos();
     </script>
 </body>
