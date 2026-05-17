@@ -16,44 +16,48 @@
         </div>
         
         <div class="buscador-contenedor">
-            <input type="text" id="barra-busqueda" placeholder="Buscar juego en WFGAMES..." oninput="filtrarJuegos()">
+            <input type="text" id="barra-busqueda" placeholder="Buscar en la tienda..." oninput="filtrarJuegos()">
         </div>
         
         <div class="menu-derecha">
-            <button id="btn-notificaciones" onclick="pedirNotificaciones()">🔔 Activar Avisos</button>
-            <button id="btn-admin" onclick="autenticarOwner()">🔑 Owner</button>
+            <button id="btn-notificaciones" onclick="pedirNotificaciones()">Permitir Notificaciones</button>
+            <button id="btn-admin" onclick="autenticarOwner()">Modo Owner</button>
             <div class="carrito-icono">
-                🛒 Carrito: $<span id="total-carrito">0.00</span>
+                Carrito: $<span id="total-carrito">0.00</span>
             </div>
         </div>
     </header>
 
     <section class="seccion-noticias">
-        <h2>🔥 Últimas Noticias Gamer</h2>
+        <h2>Noticias Destacadas</h2>
         <div class="noticias-contenedor">
             <div class="noticia-tarjeta">
-                <h4>¡Gran Inauguración!</h4>
-                <p>WFGAMES abre sus puertas oficialmente en internet este 2026. ¡Atentos a los próximos lanzamientos!</p>
+                <h4>Inauguración de la Plataforma</h4>
+                <p>WFGAMES inicia operaciones de forma oficial. Catálogo en constante actualización.</p>
             </div>
             <div class="noticia-tarjeta">
-                <h4>Modo Owner Activo</h4>
-                <p>El administrador ya puede gestionar el catálogo en tiempo real desde cualquier dispositivo.</p>
+                <h4>Panel de Administración</h4>
+                <p>Acceso exclusivo para el Owner. Carga de títulos optimizada mediante archivos locales.</p>
             </div>
         </div>
     </section>
 
-    <h2 class="titulo-seccion">🕹️ Catálogo de Videojuegos</h2>
+    <h2 class="titulo-seccion">Todos los Juegos</h2>
     <main class="tienda-contenedor" id="contenedor-juegos">
         </main>
 
     <section id="panel-agregar-juego" style="display: none;">
-        <h2>➕ Agregar Nuevo Videojuego a WFGAMES</h2>
+        <h2>Añadir Nuevo Título a WFGAMES</h2>
         <div class="formulario">
-            <input type="text" id="nuevo-nombre" placeholder="Nombre del juego">
-            <input type="text" id="nueva-categoria" placeholder="Categoría (Ej: Acción)">
-            <input type="number" id="nuevo-precio" placeholder="Precio ($)" step="0.01">
-            <input type="text" id="nuevo-emoji" placeholder="Emoji (Ej: 🎮)">
-            <button onclick="crearNuevoJuego()">Publicar en la Tienda</button>
+            <input type="text" id="nuevo-nombre" placeholder="Título del videojuego">
+            <input type="text" id="nueva-categoria" placeholder="Género / Etiquetas">
+            <input type="number" id="nuevo-precio" placeholder="Precio en USD ($)" step="0.01">
+            
+            <label for="nueva-imagen" class="btn-adjuntar-foto">📎 Adjuntar imagen de portada...</label>
+            <input type="file" id="nueva-imagen" accept="image/*" style="display: none;" onchange="actualizarNombreArchivo()">
+            <span id="nombre-archivo-seleccionado" style="font-size: 0.85rem; color: #a4d007; text-align: center;"></span>
+            
+            <button onclick="crearNuevoJuego()">Publicar Juego</button>
         </div>
     </section>
 
