@@ -15,6 +15,7 @@
             <nav class="nav-links">
                 <a href="#" class="active">TIENDA</a>
                 <a href="#">SOPORTE</a>
+                <!-- Este botón ahora sí abrirá el login -->
                 <a href="#" id="open-login-btn">INICIAR SESIÓN</a>
             </nav>
             <div class="cart-status">
@@ -23,54 +24,19 @@
         </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL / CATÁLOGO -->
+    <!-- CONTENIDO PRINCIPAL / CATÁLOGO LIMPIO -->
     <main class="store-container">
         <section class="store-header">
             <h1>Buscar en la tienda</h1>
             <div class="search-bar-container">
-                <input type="text" id="search-input" placeholder="Introduce un término de búsqueda o una etiqueta...">
+                <input type="text" id="search-input" placeholder="Introduce un término de búsqueda...">
             </div>
         </section>
 
-        <!-- Grilla de Videojuegos -->
+        <!-- Catálogo vacío listo para tus juegos reales -->
         <section class="games-grid" id="games-grid">
-            <!-- Juego 1 -->
-            <div class="game-card">
-                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400" alt="Juego 1">
-                <div class="game-info">
-                    <h3>Cyber Action 2026</h3>
-                    <p class="tags">Acción, Ciencia Ficción</p>
-                    <div class="game-price-row">
-                        <span class="price">$59.99</span>
-                        <button class="btn-add-cart" data-id="1" data-name="Cyber Action 2026" data-price="59.99">Añadir al carrito</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Juego 2 -->
-            <div class="game-card">
-                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400" alt="Juego 2">
-                <div class="game-info">
-                    <h3>Dark Fantasy RPG</h3>
-                    <p class="tags">Rol, Mundo Abierto</p>
-                    <div class="game-price-row">
-                        <span class="price">$39.99</span>
-                        <button class="btn-add-cart" data-id="2" data-name="Dark Fantasy RPG" data-price="39.99">Añadir al carrito</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Juego 3 -->
-            <div class="game-card">
-                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=400" alt="Juego 3">
-                <div class="game-info">
-                    <h3>Speed Drivers</h3>
-                    <p class="tags">Carreras, Simulación</p>
-                    <div class="game-price-row">
-                        <span class="price">$19.99</span>
-                        <button class="btn-add-cart" data-id="3" data-name="Speed Drivers" data-price="19.99">Añadir al carrito</button>
-                    </div>
-                </div>
+            <div class="no-games-message">
+                <p>No hay juegos disponibles en este momento. Próximamente se añadirán novedades.</p>
             </div>
         </section>
     </main>
@@ -116,11 +82,11 @@
         </div>
     </div>
 
-    <!-- PANEL ADMINISTRATIVO DE MODO DUEÑO (Oculto inicialmente) -->
+    <!-- PANEL ADMINISTRATIVO DE MODO DUEÑO -->
     <div id="admin-panel" class="modal-overlay">
         <div class="admin-card">
             <h2>PANEL DE CONTROL ADMINISTRATIVO</h2>
-            <p>Monitoreo de seguridad y estado financiero de WFGAMES</p>
+            <p>Monitoreo de seguridad y estado financiero de WFGAMES (Modo Dueño)</p>
             <hr class="panel-divider">
             <div class="panel-stats">
                 <div class="stat-box"><h4>Ventas del Día</h4><p>$0.00</p></div>
@@ -130,7 +96,7 @@
         </div>
     </div>
 
-    <!-- BOTÓN SECRETO PARA EL DUEÑO -->
+    <!-- BOTÓN SECRETO PARA EL DUEÑO (Mando escondido) -->
     <div class="admin-access-trigger">
         <span id="secret-admin-trigger">🎮</span>
     </div>

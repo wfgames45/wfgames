@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // ELEMENTOS DEL DOM
+    // CAPTURA DE BOTONES Y MODALES
     const openLoginBtn = document.getElementById("open-login-btn");
     const closeLoginBtn = document.getElementById("close-login-btn");
     const loginModal = document.getElementById("login-modal");
+    
     const formLogin = document.getElementById("form-login");
     const btnGoogle = document.getElementById("btn-google-auth");
     const linkForgot = document.getElementById("link-forgot-pass");
@@ -10,108 +11,87 @@ document.addEventListener("DOMContentLoaded", () => {
     const secretTrigger = document.getElementById("secret-admin-trigger");
     const adminPanel = document.getElementById("admin-panel");
     const closeAdminBtn = document.getElementById("close-admin-btn");
-    
-    const cartCountEl = document.getElementById("cart-count");
-    const searchInput = document.getElementById("search-input");
-    
-    let cartItemsCount = 0;
 
-    // --- MANEJO DEL INTERFAZ DEL MODAL LOGIN ---
-    openLoginBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        loginModal.style.display = "flex";
-    });
+    // --- ENTRAR A INICIAR SESIÓN (CORREGIDO) ---
+    if (openLoginBtn) {
+        openLoginBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            loginModal.style.display = "flex"; // Abre ventana de login
+        });
+    }
 
-    closeLoginBtn.addEventListener("click", () => {
-        loginModal.style.display = "none";
-    });
+    if (closeLoginBtn) {
+        closeLoginBtn.addEventListener("click", () => {
+            loginModal.style.display = "none"; // Cierra ventana de login
+        });
+    }
 
-    // --- SECCIÓN MODO DUEÑO (SISTEMA ADMINISTRATIVO) ---
+    // --- FUNCIÓN VERIFICADORA MODO DUEÑO ---
     const verificarAccesoMaster = (passwordIntroducido) => {
         if (passwordIntroducido === "wftime") {
-            loginModal.style.display = "none"; // Cierra el login si estaba abierto
-            adminPanel.style.display = "flex";  // Abre el panel Pro
+            loginModal.style.display = "none"; 
+            adminPanel.style.display = "flex"; // Abre el panel de administrador
         } else {
-            alert("Acceso inválido del sistema.");
+            alert("Contraseña de administrador incorrecta.");
         }
     };
 
-    // Al enviar el formulario de login tradicional
+    // Validación mediante formulario normal
     formLogin.addEventListener("submit", (e) => {
         e.preventDefault();
         const emailOrUser = document.getElementById("login-email").value;
         const pass = document.getElementById("login-password").value;
 
-        // Comprobación si es el administrador logueándose por el input clásico
         if (pass === "wftime" || emailOrUser === "admin") {
             verificarAccesoMaster(pass);
         } else {
-            alert(`Sesión normal iniciada para el usuario: ${emailOrUser}`);
+            alert(`Iniciando sesión de usuario para: ${emailOrUser}`);
             loginModal.style.display = "none";
         }
     });
 
-    // Evento al presionar el emoji oculto del control de juegos 🎮
+    // Validación usando el emoji de control secreto 🎮
     if (secretTrigger) {
         secretTrigger.addEventListener("click", () => {
-            const claveAdmin = prompt("SISTEMA DE SEGURIDAD WFGAMES\nIngresa la clave de verificación maestra:");
+            const claveAdmin = prompt("WFGAMES SECURITY\nIntroduce la clave del Dueño:");
             if (claveAdmin) {
                 verificarAccesoMaster(claveAdmin);
             }
         });
     }
 
-    // Cerrar panel administrativo
-    closeAdminBtn.addEventListener("click", () => {
-        adminPanel.style.display = "none";
-    });
+    // Cerrar panel de administrador
+    if (closeAdminBtn) {
+        closeAdminBtn.addEventListener("click", () => {
+            adminPanel.style.display = "none";
+        });
+    }
 
-    // --- FLUJO DE AUTENTICACIÓN GOOGLE ---
+    // --- ENTRADA CON GOOGLE ---
     btnGoogle.addEventListener("click", () => {
-        alert("Sincronizando con los servidores de Google...\n(Flujo simulado OAuth2)");
+        alert("Abriendo ventana emergente de Google Account...\n(Simulado)");
         
-        const usuarioGoogleSimulado = {
-            nombre: "Usuario Google WFGames",
-            email: "cuenta.usuario@gmail.com"
+        const sesionUsuario = {
+            nombre: "Jugador WFGames",
+            email: "jugador@gmail.com"
         };
         
-        localStorage.setItem("session_wfgames", JSON.stringify(usuarioGoogleSimulado));
-        alert(`¡Vínculo correcto! Autenticado como: ${usuarioGoogleSimulado.nombre}`);
+        localStorage.setItem("session_wfgames", JSON.stringify(sesionUsuario));
+        alert(`¡Sesión vinculada con éxito! Bienvenido ${sesionUsuario.nombre}`);
         loginModal.style.display = "none";
     });
 
-    // --- RECUPERACIÓN DE CUENTAS ---
+    // --- RECUPERACIÓN DE CUENTA ---
     linkForgot.addEventListener("click", (e) => {
         e.preventDefault();
-        const correoRecuperacion = prompt("ASISTENCIA DE CUENTAS WFGAMES\n\nPor favor, ingresa tu correo electrónico registrado para restaurar el acceso:");
+        const correo = prompt("SOPORTE WFGAMES\n\nIngresa tu correo electrónico para enviarte las instrucciones de recuperación:");
         
-        if (correoRecuperacion) {
-            if (correoRecuperacion.includes("@") && correoRecuperacion.includes(".")) {
-                alert(`Solicitud procesada.\nSe ha enviado un correo con las directrices de restablecimiento de cuenta a: ${correoRecuperacion}`);
+        if (correo) {
+            if (correo.includes("@")) {
+                alert(`Te hemos enviado un correo de recuperación a: ${correo}\nRevisa tu bandeja de entrada.`);
             } else {
-                alert("La cadena de texto introducida no coincide con una dirección de correo válida.");
+                alert("Por favor ingresa un correo electrónico válido.");
             }
         }
-    });
-
-    // --- INTERACCIONES COMPLEMENTARIAS (CARRITO Y BUSCADOR) ---
-    document.querySelectorAll(".btn-add-cart").forEach(button => {
-        button.addEventListener("click", () => {
-            cartItemsCount++;
-            cartCountEl.textContent = cartItemsCount;
-        });
-    });
-
-    searchInput.addEventListener("input", (e) => {
-        const query = e.target.value.toLowerCase();
-        document.querySelectorAll(".game-card").forEach(card => {
-            const title = card.querySelector("h3").textContent.toLowerCase();
-            const tags = card.querySelector(".tags").textContent.toLowerCase();
-            if (title.includes(query) || tags.includes(query)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
     });
 });

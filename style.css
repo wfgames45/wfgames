@@ -1,8 +1,7 @@
-/* GENERALES Y REPETICIONES */
 body {
     margin: 0;
     padding: 0;
-    background-color: #1b2838; /* Azul oscuro clásico de fondo de Steam */
+    background-color: #1b2838;
     color: #c7d5e0;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -48,7 +47,7 @@ body {
     font-size: 14px;
 }
 
-/* CONTENEDOR DE TIENDA Y BUSCADOR */
+/* CONTENEDOR DE TIENDA */
 .store-container {
     max-width: 1200px;
     margin: 30px auto;
@@ -77,90 +76,36 @@ body {
     color: #fff;
 }
 
-.search-bar-container input::placeholder {
-    color: #b8b6b4;
-}
-
-/* GRILLA DE JUEGOS */
-.games-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.game-card {
+/* DISEÑO SIN JUEGOS */
+.no-games-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
     background-color: #16202d;
+    border: 1px dashed #233c51;
     border-radius: 4px;
-    overflow: hidden;
-    transition: transform 0.2s;
 }
 
-.game-card:hover {
-    transform: translateY(-5px);
+.no-games-message p {
+    color: #8f98a0;
+    font-size: 15px;
 }
 
-.game-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.game-info {
-    padding: 15px;
-}
-
-.game-info h3 {
-    margin: 0 0 5px 0;
-    color: #fff;
-    font-size: 18px;
-}
-
-.game-info .tags {
-    font-size: 12px;
-    color: #626366;
-    margin: 0 0 15px 0;
-}
-
-.game-price-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.game-price-row .price {
-    color: #66c0f4;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.btn-add-cart {
-    background-color: #4c6b22;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.btn-add-cart:hover {
-    background-color: #60882d;
-}
-
-/* MODALES DE CAPA SUPERIOR (OVERLAYS) */
+/* CAPAS SUPERIORES (MODALES) */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: none; /* Se activa por JS */
+    background-color: rgba(0, 0, 0, 0.85);
+    display: none; /* Controlado por JS */
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 10000;
 }
 
-/* CAJA DE LOGIN MODERNA */
+/* TARJETA DE LOGIN */
 .login-card {
     background-color: #171a21;
     border: 1px solid #2a3f5a;
@@ -182,7 +127,7 @@ body {
     background: none;
     border: none;
     color: #8f98a0;
-    font-size: 24px;
+    font-size: 26px;
     cursor: pointer;
 }
 
@@ -235,7 +180,7 @@ body {
     border-radius: 3px;
 }
 
-/* SEPARADOR Y BOTÓN GOOGLE */
+/* SEPARADORES Y GOOGLE */
 .auth-separator {
     text-align: center;
     margin: 20px 0;
@@ -292,10 +237,10 @@ body {
     text-decoration: underline;
 }
 
-/* PANEL ADMIN */
+/* TARJETA ADMINISTRATIVA */
 .admin-card {
     background-color: #0b0e14;
-    border: 2px solid #ff4a4a;
+    border: 2px solid #2a3f5a;
     padding: 40px;
     border-radius: 6px;
     width: 100%;
@@ -327,22 +272,22 @@ body {
 .stat-box p { margin: 0; font-size: 20px; font-weight: bold;}
 .status-ok { color: #47b28f; }
 
-/* DETONADOR DISCRETO DEL MODO DUEÑO */
+/* DISPARADOR SECRETO MANDO */
 .admin-access-trigger {
     position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 9999;
+    bottom: 15px;
+    right: 15px;
+    z-index: 99999;
 }
 
 #secret-admin-trigger {
     cursor: pointer;
-    opacity: 0.15; /* Súper oculto visualmente */
-    font-size: 18px;
+    opacity: 0.2;
+    font-size: 20px;
     user-select: none;
-    transition: opacity 0.3s;
+    transition: opacity 0.2s;
 }
 
 #secret-admin-trigger:hover {
-    opacity: 0.7;
+    opacity: 1;
 }
