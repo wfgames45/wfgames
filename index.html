@@ -15,7 +15,6 @@
             <nav class="nav-links">
                 <a href="#" class="active">TIENDA</a>
                 <a href="#">SOPORTE</a>
-                <!-- Botón de apertura -->
                 <a href="#" id="open-login-btn">INICIAR SESIÓN</a>
             </nav>
             <div class="cart-status">
@@ -24,7 +23,7 @@
         </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL / CATÁLOGO LIMPIO -->
+    <!-- CONTENIDO PRINCIPAL / CATÁLOGO DE VIDEOJUEGOS -->
     <main class="store-container">
         <section class="store-header">
             <h1>Buscar en la tienda</h1>
@@ -33,11 +32,37 @@
             </div>
         </section>
 
-        <!-- Catálogo sin juegos de prueba de modo Steam -->
+        <!-- GRILLA REAL DE PRODUCTOS (Modifica o añade aquí tus juegos) -->
         <section class="games-grid" id="games-grid">
-            <div class="no-games-message">
-                <p>No hay juegos disponibles en este momento. Próximamente se añadirán novedades.</p>
+            
+            <!-- JUEGO 1 -->
+            <div class="game-card">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400" alt="Juego 1">
+                <div class="game-info">
+                    <h3>GRAND THEFT AUTO V</h3>
+                    <p class="tags">Acción, Mundo Abierto</p>
+                    <div class="game-price-row">
+                        <span class="price">$29.99</span>
+                        <button class="btn-add-cart" data-name="Grand Theft Auto V">Añadir al carrito</button>
+                    </div>
+                </div>
             </div>
+
+            <!-- JUEGO 2 -->
+            <div class="game-card">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400" alt="Juego 2">
+                <div class="game-info">
+                    <h3>MINECRAFT</h3>
+                    <p class="tags">Aventura, Construcción</p>
+                    <div class="game-price-row">
+                        <span class="price">$19.99</span>
+                        <button class="btn-add-cart" data-name="Minecraft">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Puedes copiar desde aquí abajo para añadir más tarjetas de juegos -->
+
         </section>
     </main>
 
@@ -96,16 +121,19 @@
         </div>
     </div>
 
-    <!-- BOTÓN SECRETO PARA EL DUEÑO (Mando minimalista oculto abajo a la derecha) -->
+    <!-- BOTÓN SECRETO PARA EL DUEÑO (Mando invisible en la esquina inferior derecha) -->
     <div class="admin-access-trigger">
         <span id="secret-admin-trigger">🎮</span>
     </div>
 
 
     <!-- ======================================================== -->
-    <!--          LÓGICA JAVASCRIPT INTEGRADA (ANTI-FALLOS)       -->
+    <!--            SISTEMA JAVASCRIPT INTEGRADO ANTI-FALLOS      -->
     <!-- ======================================================== -->
     <script>
+        // Contador global de productos en el carrito
+        let totalCarrito = 0;
+
         // --- FUNCIÓN MAESTRA DEL MODO DUEÑO ---
         function verificarAccesoMaster(passwordIntroducido) {
             if (passwordIntroducido === "wftime") {
@@ -116,7 +144,7 @@
             }
         }
 
-        // 1. Abrir modal de Login (Desde la navbar)
+        // 1. Abrir modal de Login
         const botonAbrirLogin = document.getElementById("open-login-btn");
         if (botonAbrirLogin) {
             botonAbrirLogin.onclick = function(e) {
@@ -125,7 +153,7 @@
             };
         }
 
-        // 2. Cerrar modal de Login (Botón X)
+        // 2. Cerrar modal de Login
         const botonCerrarLogin = document.getElementById("close-login-btn");
         if (botonCerrarLogin) {
             botonCerrarLogin.onclick = function() {
@@ -133,7 +161,7 @@
             };
         }
 
-        // 3. Formulario tradicional (Login normal o por clave secreta)
+        // 3. Formulario tradicional (Login normal o Modo Dueño)
         const formularioLogin = document.getElementById("form-login");
         if (formularioLogin) {
             formularioLogin.onsubmit = function(e) {
@@ -169,7 +197,7 @@
             };
         }
 
-        // 6. Botón de Google (OAuth Firebase Modo Simulado)
+        // 6. Botón de Google
         const botonGoogleAuth = document.getElementById("btn-google-auth");
         if (botonGoogleAuth) {
             botonGoogleAuth.onclick = function() {
@@ -192,6 +220,32 @@
                         alert("La dirección ingresada no parece un formato de correo válido.");
                     }
                 }
+            };
+        }
+
+        // 8. Lógica Funcional para agregar al Carrito de Compras
+        document.querySelectorAll(".btn-add-cart").forEach(btn => {
+            btn.onclick = function() {
+                totalCarrito++;
+                document.getElementById("cart-count").textContent = totalCarrito;
+                alert(`¡"${this.getAttribute("data-name")}" ha sido añadido al carrito!`);
+            };
+        });
+
+        // 9. Lógica Funcional para el Buscador de la Tienda
+        const buscador = document.getElementById("search-input");
+        if (buscador) {
+            buscador.oninput = function() {
+                const texto = this.value.toLowerCase();
+                document.querySelectorAll(".game-card").forEach(tarjeta => {
+                    const titulo = tarjeta.querySelector("h3").textContent.toLowerCase();
+                    const etiquetas = tarjeta.querySelector(".tags").textContent.toLowerCase();
+                    if (titulo.includes(texto) || etiquetas.includes(texto)) {
+                        tarjeta.style.display = "block";
+                    } else {
+                        tarjeta.style.display = "none";
+                    }
+                });
             };
         }
     </script>
