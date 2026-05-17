@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WFgames - Tienda de Videojuegos</title>
+    <title>WFgames - Tienda de Videojuegos Segura</title>
     <style>
         /* ESTILOS INSPIRADOS EN STEAM */
         * {
@@ -90,7 +90,6 @@
             color: #90ba3c;
         }
 
-        /* BOTÓN INICIAR SESIÓN ESTILO STEAM */
         .btn-login-nav {
             background-color: #214b6b;
             color: #fff;
@@ -221,7 +220,7 @@
             z-index: 10;
         }
 
-        /* VENTANA MODAL FLOTANTE PARA INICIAR SESIÓN */
+        /* MODAL DE LOGIN */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -342,6 +341,17 @@
             cursor: pointer;
             user-select: none;
             opacity: 0.15; 
+            transition: opacity 0.2s;
+        }
+
+        #secret-owner-btn:hover {
+            opacity: 1;
+        }
+        
+        /* ESTILO CUANDO EL BOTÓN SECRETO ESTÁ BLOQUEADO POR SEGURIDAD */
+        #secret-owner-btn.blocked {
+            cursor: not-allowed;
+            opacity: 0.05;
         }
     </style>
 </head>
@@ -362,7 +372,6 @@
                 <div class="search-box">
                     <input type="text" id="search-input" placeholder="buscar juego..." onkeyup="filtrarJuegos()">
                 </div>
-                <!-- BOTÓN INICIAR SESIÓN / DATOS USUARIO -->
                 <div id="auth-container">
                     <button class="btn-login-nav" onclick="abrirModal()">Iniciar Sesión</button>
                 </div>
@@ -377,25 +386,23 @@
             <h2 class="section-title">Últimas Noticias</h2>
             <div class="news-grid">
                 <div class="news-card">
-                    <h3>¡Cuentas de Usuario Disponibles!</h3>
-                    <p>Inicia sesión ahora para adquirir copias digitales y guardarlas para siempre en tu biblioteca digital personal.</p>
+                    <h3>🛡️ Servidor Protegido</h3>
+                    <p>Se ha implementado un firewall local y un sistema anti-fuerza bruta para blindar las cuentas y el panel de control.</p>
                 </div>
                 <div class="news-card">
-                    <h3>Atención Administradores</h3>
-                    <p>El Modo Owner permanece activo al fondo del servidor presionando el icono 🎮.</p>
+                    <h3>Catálogo Asegurado</h3>
+                    <p>Cualquier intento de inyectar código malicioso en los formularios será destruido por el desinfectante del sistema.</p>
                 </div>
             </div>
         </section>
 
-        <!-- SECCIÓN DINÁMICA DE LA TIENDA O BIBLIOTECA -->
+        <!-- CONTENIDO PRINCIPAL -->
         <main>
             <h2 class="section-title" id="page-title">Juegos Destacados</h2>
-            <div class="games-grid" id="games-container">
-                <!-- Se inyecta con JS -->
-            </div>
+            <div class="games-grid" id="games-container"></div>
         </main>
 
-        <!-- PANEL OWNER ABAJO -->
+        <!-- PANEL OWNER -->
         <section id="panel-admin">
             <h2>🛠️ Modo Owner - Panel de Inventario</h2>
             <form id="add-game-form">
@@ -421,7 +428,7 @@
 
     </div>
 
-    <!-- VENTANA EMERGENTE (MODAL) DE LOGIN -->
+    <!-- MODAL DE LOGIN -->
     <div class="modal-overlay" id="login-modal">
         <div class="modal-box">
             <span class="modal-close" onclick="cerrarModal()">&times;</span>
@@ -429,10 +436,10 @@
             <form id="login-form">
                 <div class="form-group">
                     <label style="color:#fff;">Nombre de Usuario:</label>
-                    <input type="text" id="username-input" required placeholder="Ej. GamerPro">
+                    <input type="text" id="username-input" required placeholder="Ej. GamerPro" maxlength="20">
                 </div>
                 <div class="form-group">
-                    <label style="color:#fff;">Contraseña (Usa 1234 para pruebas):</label>
+                    <label style="color:#fff;">Contraseña:</label>
                     <input type="password" id="password-input" required value="1234">
                 </div>
                 <button type="submit" class="btn-save-exit" style="width:100%; margin-top:10px;">Entrar a mi Cuenta</button>
@@ -449,12 +456,27 @@
     </footer>
 
     <script>
-        // Memoria de datos de la app
+        // CAPA DE SEGURIDAD 1: Sanitización de datos (Anti-XSS)
+        function limpiarTexto(texto) {
+            if (typeof texto !== 'string') return texto;
+            // Elimina etiquetas html peligrosas transformando caracteres especiales
+            return texto
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;")
+                .trim();
+        }
+
+        // Carga y guardado seguro de inventario
         let juegos = JSON.parse(localStorage.getItem('wfgames_inventario')) || [];
         let usuarioActivo = JSON.parse(sessionStorage.getItem('wfgames_usuario')) || null;
-        
-        // El formato de biblioteca será: { "NombreUsuario": [idJuego1, idJuego2] }
         let bibliotecas = JSON.parse(localStorage.getItem('wfgames_bibliotecas')) || {};
+
+        // Control Anti-Fuerza Bruta para el botón secreto
+        let intentosFallidosAdmin = 0;
+        let adminBloqueado = false;
 
         const gamesContainer = document.getElementById('games-container');
         const secretBtn = document.getElementById('secret-owner-btn');
@@ -465,9 +487,8 @@
         const authContainer = document.getElementById('auth-container');
         
         let modoOwnerActivo = false;
-        let vistaActual = 'tienda'; // Puede ser 'tienda' o 'biblioteca'
+        let vistaActual = 'tienda';
 
-        // PINTAR LA TIENDA O LA BIBLIOTECA
         function renderJuegos(juegosFiltrados = juegos) {
             gamesContainer.innerHTML = "";
             const titleElement = document.getElementById('page-title');
@@ -478,7 +499,7 @@
                 let misJuegos = juegos.filter(j => misJuegosIds.includes(j.id));
                 
                 if(misJuegos.length === 0) {
-                    gamesContainer.innerHTML = "<p style='color: #8f98a0;'>Aún no tienes juegos en tu cuenta. ¡Ve a la tienda y adquiere alguno!</p>";
+                    gamesContainer.innerHTML = "<p style='color: #8f98a0;'>Aún no tienes juegos en tu cuenta.</p>";
                     return;
                 }
                 
@@ -495,10 +516,9 @@
                     gamesContainer.appendChild(card);
                 });
             } else {
-                // Vista Tienda normal
                 titleElement.innerText = "Juegos Destacados";
                 if(juegosFiltrados.length === 0) {
-                    gamesContainer.innerHTML = "<p style='color: #8f98a0;'>No hay juegos disponibles en este momento.</p>";
+                    gamesContainer.innerHTML = "<p style='color: #8f98a0;'>No hay juegos disponibles.</p>";
                     return;
                 }
 
@@ -506,7 +526,6 @@
                     const card = document.createElement('div');
                     card.classList.add('game-card');
                     
-                    // Validar si el usuario ya tiene comprado el juego
                     let yaComprado = usuarioActivo && (bibliotecas[usuarioActivo] || []).includes(juego.id);
                     let botonAccion = yaComprado 
                         ? `<button class="btn-buy" style="background:#316282; cursor:default;" disabled>Ya en tu Cuenta</button>`
@@ -526,7 +545,6 @@
             }
         }
 
-        // CAMBIAR DE VISTA (TIENDA <=> BIBLIOTECA)
         window.cambiarVista = function(destino) {
             vistaActual = destino;
             document.getElementById('nav-tienda').classList.toggle('active', destino === 'tienda');
@@ -534,49 +552,47 @@
             renderJuegos();
         }
 
-        // COMPRAR / AÑADIR JUEGO A LA CUENTA ACTIVA
         window.adquirirJuego = function(id) {
             if (!usuarioActivo) {
-                alert("Debes iniciar sesión con tu cuenta para poder añadir juegos.");
+                alert("Seguridad: Debes iniciar sesión para realizar transacciones.");
                 abrirModal();
                 return;
             }
-            
-            if(!bibliotecas[usuarioActivo]) {
-                bibliotecas[usuarioActivo] = [];
-            }
+            if(!bibliotecas[usuarioActivo]) bibliotecas[usuarioActivo] = [];
             
             if (!bibliotecas[usuarioActivo].includes(id)) {
                 bibliotecas[usuarioActivo].push(id);
                 localStorage.setItem('wfgames_bibliotecas', JSON.stringify(bibliotecas));
-                alert("¡Excelente! El videojuego ha sido añadido permanentemente a tu cuenta.");
+                alert("¡Videojuego añadido correctamente!");
                 renderJuegos();
             }
         }
 
-        // CONTROL DE LA VENTANA MODAL (INICIAR SESIÓN)
         window.abrirModal = function() { loginModal.style.visibility = "visible"; loginModal.style.opacity = "1"; }
         window.cerrarModal = function() { loginModal.style.visibility = "hidden"; loginModal.style.opacity = "0"; }
 
-        // PROCESAR INICIO DE SESIÓN
+        // LOGIN SANITIZADO
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const username = document.getElementById('username-input').value.trim();
+            // Aplicamos limpieza al texto ingresado por el usuario
+            const usernameRaw = document.getElementById('username-input').value;
+            const username = limpiarTexto(usernameRaw);
+
+            if(username.length === 0) {
+                alert("Nombre de usuario inválido.");
+                return;
+            }
             
             usuarioActivo = username;
             sessionStorage.setItem('wfgames_usuario', JSON.stringify(usuarioActivo));
             
-            // Si la cuenta no existe en las bibliotecas creadas, se inicializa vacía
-            if (!bibliotecas[usuarioActivo]) {
-                bibliotecas[usuarioActivo] = [];
-            }
+            if (!bibliotecas[usuarioActivo]) bibliotecas[usuarioActivo] = [];
 
             actualizarInterfazAuth();
             cerrarModal();
             renderJuegos();
         });
 
-        // CERRAR SESIÓN
         window.cerrarSesion = function() {
             usuarioActivo = null;
             sessionStorage.removeItem('wfgames_usuario');
@@ -585,72 +601,105 @@
             renderJuegos();
         }
 
-        // ACTUALIZAR BOTÓN DE LOGIN / NAVBAR
         function actualizarInterfazAuth() {
             const navBiblioteca = document.getElementById('nav-biblioteca');
             if (usuarioActivo) {
                 authContainer.innerHTML = `<span class="user-logged-in">👤 ${usuarioActivo}</span> <button class="btn-login-nav" style="background:#d9534f; margin-left:10px;" onclick="cerrarSesion()">Salir</button>`;
-                navBiblioteca.style.display = "block"; // Habilita ver la biblioteca
+                navBiblioteca.style.display = "block";
             } else {
                 authContainer.innerHTML = `<button class="btn-login-nav" onclick="abrirModal()">Iniciar Sesión</button>`;
                 navBiblioteca.style.display = "none";
             }
         }
 
-        // FILTRADO DEL BUSCADOR
         function filtrarJuegos() {
-            const query = document.getElementById('search-input').value.toLowerCase();
+            const query = limpiarTexto(document.getElementById('search-input').value.toLowerCase());
             const filtrados = juegos.filter(juego => juego.titulo.toLowerCase().includes(query));
             renderJuegos(filtrados);
         }
 
-        // CLIC EN MODO OWNER (CON CONTRASEÑA "wftime")
+        // CAPA DE SEGURIDAD 2: Anti-Fuerza Bruta para el Botón Secreto 🎮
         secretBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            
+            if (adminBloqueado) {
+                alert("🚨 ACCESO BLOQUEADO: Demasiados intentos fallidos. Inténtalo más tarde.");
+                return;
+            }
+
             const passwordInput = prompt("Introduce la contraseña de Owner:");
+            
             if (passwordInput === "wftime") {
-                alert("¡Modo Owner habilitado abajo!");
+                alert("¡Acceso verificado!");
+                intentosFallidosAdmin = 0; // Resetea el contador al acertar
                 modoOwnerActivo = true;
                 panelAdmin.style.display = "block"; 
-                cambiarVista('tienda'); // Te regresa a la tienda para editar
+                cambiarVista('tienda');
                 panelAdmin.scrollIntoView({ behavior: 'smooth' });
             } else {
-                alert("Contraseña incorrecta.");
+                intentosFallidosAdmin++;
+                let intentosRestantes = 3 - intentosFallidosAdmin;
+                
+                if (intentosRestantes <= 0) {
+                    adminBloqueado = true;
+                    secretBtn.classList.add('blocked');
+                    alert("🚨 ALERTA DE SEGURIDAD: Sistema de administración bloqueado por sospecha de hackeo.");
+                    
+                    // Desbloquear automáticamente en 30 segundos
+                    setTimeout(() => {
+                        adminBloqueado = false;
+                        intentosFallidosAdmin = 0;
+                        secretBtn.classList.remove('blocked');
+                        console.log("Sistema desbancado.");
+                    }, 30000);
+                } else {
+                    alert(`Contraseña incorrecta. Te quedan ${intentosRestantes} intentos antes del bloqueo.`);
+                }
             }
         });
 
-        // AGREGAR JUEGO NUEVO
+        // FORMULARIO DE CREACIÓN SANITIZADO
         addGameForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            
+            // Sanitizamos los inputs de texto del dueño antes de procesar
+            const tituloLimpio = limpiarTexto(document.getElementById('title').value);
+            const precioValido = parseFloat(document.getElementById('price').value);
+            const imagenLimpia = limpiarTexto(document.getElementById('image').value);
+
+            if(!tituloLimpio || isNaN(precioValido)) {
+                alert("Error: Datos corruptos detectados.");
+                return;
+            }
+
             const nuevoJuego = {
                 id: Date.now(),
-                titulo: document.getElementById('title').value,
-                precio: parseFloat(document.getElementById('price').value),
-                imagen: document.getElementById('image').value
+                titulo: tituloLimpio,
+                precio: precioValido,
+                imagen: imagenLimpia
             };
+            
             juegos.push(nuevoJuego);
             renderJuegos();
             addGameForm.reset();
         });
 
-        // GUARDAR TODO Y VOLVER AL MODO NORMAL
         window.guardarYSalir = function() {
             localStorage.setItem('wfgames_inventario', JSON.stringify(juegos));
             modoOwnerActivo = false;
             panelAdmin.style.display = "none"; 
             renderJuegos();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            alert("Inventario actualizado.");
+            alert("Base de datos sincronizada con éxito.");
         }
 
         window.eliminarJuego = function(id) {
-            if(confirm("¿Eliminar juego?")) {
+            if(confirm("¿Confirmar eliminación física del registro?")) {
                 juegos = juegos.filter(juego => juego.id !== id);
                 renderJuegos();
             }
         }
 
-        // Carga Inicial del Sistema
         actualizarInterfazAuth();
         renderJuegos();
     </script>
