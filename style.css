@@ -1,281 +1,348 @@
+/* GENERALES Y REPETICIONES */
 body {
     margin: 0;
-    font-family: 'Motiva Sans', Arial, Helvetica, sans-serif;
-    background-color: #1b2838;
+    padding: 0;
+    background-color: #1b2838; /* Azul oscuro clásico de fondo de Steam */
     color: #c7d5e0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-header {
+/* BARRA DE NAVEGACIÓN */
+.main-header {
     background-color: #171a21;
-    padding: 15px 30px;
+    padding: 15px 0;
+    border-bottom: 1px solid #233c51;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #121418;
+    padding: 0 20px;
 }
 
-.marca-contenedor {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo-tienda {
-    height: 45px;
-    width: auto;
-    border-radius: 4px;
-}
-
-header h1 {
-    margin: 0;
-    color: #fff;
-    font-size: 1.5rem;
-    text-transform: uppercase;
+.logo {
+    font-size: 24px;
+    font-weight: bold;
     letter-spacing: 2px;
+    color: #fff;
 }
 
-.buscador-contenedor input {
+.nav-links a {
+    color: #b8b6b4;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: #fff;
+}
+
+.cart-status {
+    color: #66c0f4;
+    font-size: 14px;
+}
+
+/* CONTENEDOR DE TIENDA Y BUSCADOR */
+.store-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.store-header h1 {
+    font-size: 22px;
+    color: #fff;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.search-bar-container {
+    margin-bottom: 30px;
+}
+
+.search-bar-container input {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
     background-color: #316282;
     border: none;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 4px;
-    width: 280px;
-    font-size: 0.9rem;
-    outline: none;
+    border-radius: 3px;
+    color: #fff;
 }
 
-.buscador-contenedor input::placeholder {
+.search-bar-container input::placeholder {
     color: #b8b6b4;
 }
 
-.menu-derecha {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-#btn-admin, #btn-notificaciones {
-    background-color: #67c1f5;
-    border: none;
-    color: #fff;
-    padding: 8px 14px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-weight: normal;
-}
-
-#btn-admin:hover, #btn-notificaciones:hover {
-    background-color: #8ed1f8;
-}
-
-.carrito-icono {
-    background-color: #2a475e;
-    color: #67c1f5;
-    padding: 8px 15px;
-    border-radius: 3px;
-    font-weight: bold;
-}
-
-.seccion-noticias {
-    padding: 20px 40px;
-    background-color: #1b2838;
-}
-
-.seccion-noticias h2, .titulo-seccion {
-    color: #fff;
-    font-weight: normal;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
-    margin-bottom: 15px;
-}
-
-.noticias-contenedor {
-    display: flex;
+/* GRILLA DE JUEGOS */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    flex-wrap: wrap;
 }
 
-.noticia-tarjeta {
-    background-color: #121e2d;
-    padding: 15px;
-    border-radius: 4px;
-    flex: 1;
-    min-width: 250px;
-    border: 1px solid #233c51;
-}
-
-.noticia-tarjeta h4 {
-    margin: 0 0 8px 0;
-    color: #67c1f5;
-}
-
-.noticia-tarjeta p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: #acb2b8;
-}
-
-.tienda-contenedor {
-    display: flex;
-    justify-content: flex-start;
-    gap: 20px;
-    padding: 20px 40px 40px 40px;
-    flex-wrap: wrap;
-}
-
-.tarjeta-juego {
+.game-card {
     background-color: #16202d;
-    border-radius: 0;
-    padding: 12px;
-    width: 210px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.4);
-    position: relative;
-    border: 1px solid transparent;
-    transition: border 0.2s;
-}
-
-.tarjeta-juego:hover {
-    border: 1px solid #b8b6b4;
-}
-
-.btn-favorito {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.6);
-    border: none;
-    font-size: 1.1rem;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-}
-
-.imagen-portada {
-    width: 100%;
-    height: 260px;
-    object-fit: cover;
-    background-color: #0d121a;
-    margin-bottom: 12px;
-}
-
-.tarjeta-juego h3 {
-    margin: 5px 0;
-    color: #c7d5e0;
-    font-size: 1rem;
-    text-align: left;
-    white-space: nowrap;
+    border-radius: 4px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    transition: transform 0.2s;
 }
 
-.categoria {
-    font-size: 0.75rem;
-    color: #4f5d6c;
-    text-align: left;
-    margin: 0 0 12px 0;
-    text-transform: uppercase;
+.game-card:hover {
+    transform: translateY(-5px);
 }
 
-.compra-bloque {
+.game-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.game-info {
+    padding: 15px;
+}
+
+.game-info h3 {
+    margin: 0 0 5px 0;
+    color: #fff;
+    font-size: 18px;
+}
+
+.game-info .tags {
+    font-size: 12px;
+    color: #626366;
+    margin: 0 0 15px 0;
+}
+
+.game-price-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #030303;
-    padding: 5px 5px 5px 10px;
 }
 
-.precio {
-    font-size: 0.95rem;
-    font-weight: normal;
-    color: #acb2b8;
-    margin: 0;
+.game-price-row .price {
+    color: #66c0f4;
+    font-size: 16px;
+    font-weight: bold;
 }
 
-.btn-comprar {
-    background-color: #a4d007;
+.btn-add-cart {
+    background-color: #4c6b22;
     color: #fff;
     border: none;
-    padding: 6px 12px;
-    font-size: 0.85rem;
+    padding: 8px 12px;
     border-radius: 2px;
     cursor: pointer;
 }
 
-.btn-comprar:hover {
-    background-color: #bbee11;
+.btn-add-cart:hover {
+    background-color: #60882d;
 }
 
-.btn-eliminar {
-    background-color: #a33;
-    color: white;
-    border: none;
-    padding: 6px;
-    border-radius: 2px;
-    cursor: pointer;
-    margin-top: 10px;
+/* MODALES DE CAPA SUPERIOR (OVERLAYS) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    font-size: 0.8rem;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none; /* Se activa por JS */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-#panel-agregar-juego {
+/* CAJA DE LOGIN MODERNA */
+.login-card {
     background-color: #171a21;
-    max-width: 500px;
-    margin: 40px auto;
+    border: 1px solid #2a3f5a;
     padding: 30px;
-    border: 1px solid #316282;
-}
-
-#panel-agregar-juego h2 {
-    color: #fff;
-    font-size: 1.2rem;
-    margin-top: 0;
-    text-align: center;
-}
-
-.formulario {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.formulario input {
-    background-color: #2a3f5a;
-    border: 1px solid #233c51;
-    color: white;
-    padding: 10px;
-    border-radius: 3px;
-}
-
-/* Botón estilo adjuntar de Gmail */
-.btn-adjuntar-foto {
-    background-color: #2a475e;
-    color: #67c1f5;
-    padding: 10px;
-    text-align: center;
-    border-radius: 3px;
-    cursor: pointer;
-    border: 1px dashed #316282;
-    font-size: 0.9rem;
-    transition: 0.2s;
-}
-
-.btn-adjuntar-foto:hover {
-    background-color: #316282;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 380px;
+    position: relative;
     color: #fff;
 }
 
-.formulario button {
-    background-color: #a4d007;
-    color: white;
+.close-modal-container {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.btn-close {
+    background: none;
     border: none;
+    color: #8f98a0;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn-close:hover {
+    color: #fff;
+}
+
+.login-header h2 {
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin: 0 0 5px 0;
+}
+
+.login-header p {
+    color: #8f98a0;
+    font-size: 13px;
+    margin: 0 0 20px 0;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    color: #1999ff;
+    font-size: 12px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    background-color: #32353c;
+    border: 1px solid #000;
+    border-radius: 3px;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.btn-primary {
+    width: 100%;
     padding: 12px;
+    background: linear-gradient(to right, #47b28f, #279669);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+/* SEPARADOR Y BOTÓN GOOGLE */
+.auth-separator {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+.auth-separator::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #2a3f5a;
+    z-index: 1;
+}
+
+.auth-separator span {
+    background-color: #171a21;
+    padding: 0 10px;
+    position: relative;
+    z-index: 2;
+    color: #61686d;
+    font-size: 11px;
+}
+
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #171a21;
+    border: none;
+    padding: 10px;
+    border-radius: 3px;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 2px;
+}
+
+.btn-google img {
+    width: 16px;
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-footer a {
+    color: #8f98a0;
+    font-size: 12px;
+    text-decoration: underline;
+}
+
+/* PANEL ADMIN */
+.admin-card {
+    background-color: #0b0e14;
+    border: 2px solid #ff4a4a;
+    padding: 40px;
+    border-radius: 6px;
+    width: 100%;
+    max-width: 500px;
+    color: #fff;
+}
+
+.panel-divider {
+    border: 0;
+    height: 1px;
+    background: #2a3f5a;
+    margin: 20px 0;
+}
+
+.panel-stats {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-box {
+    background: #171a21;
+    padding: 15px;
+    border-radius: 4px;
+    flex: 1;
+    border: 1px solid #233c51;
+}
+
+.stat-box h4 { margin: 0 0 10px 0; color: #8f98a0;}
+.stat-box p { margin: 0; font-size: 20px; font-weight: bold;}
+.status-ok { color: #47b28f; }
+
+/* DETONADOR DISCRETO DEL MODO DUEÑO */
+.admin-access-trigger {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 9999;
+}
+
+#secret-admin-trigger {
+    cursor: pointer;
+    opacity: 0.15; /* Súper oculto visualmente */
+    font-size: 18px;
+    user-select: none;
+    transition: opacity 0.3s;
+}
+
+#secret-admin-trigger:hover {
+    opacity: 0.7;
 }

@@ -3,861 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WFgames - Tienda de Videojuegos Segura</title>
-    <style>
-        /* ESTILOS INSPIRADOS EN STEAM */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #1b2838; 
-            color: #c7d5e0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: #171a21;
-            padding: 15px 20px;
-            border-bottom: 3px solid #1a1a1a;
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .logo-brand {
-            color: #fff;
-            letter-spacing: 2px;
-            font-size: 1.6rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .logo-brand span {
-            color: #66c0f4;
-        }
-
-        nav {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        nav a {
-            color: #b8b6b4;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            cursor: pointer;
-        }
-
-        nav a:hover, nav a.active {
-            color: #fff;
-        }
-
-        .search-cart-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .search-box input {
-            background-color: #316282;
-            border: 1px solid #16202d;
-            padding: 6px 12px;
-            color: #fff;
-            border-radius: 3px;
-            font-size: 0.85rem;
-            width: 180px;
-            outline: none;
-        }
-
-        .search-box input::placeholder {
-            color: #90ba3c;
-        }
-
-        .btn-login-nav {
-            background-color: #214b6b;
-            color: #fff;
-            border: none;
-            padding: 6px 15px;
-            border-radius: 3px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-login-nav:hover {
-            background-color: #316282;
-        }
-
-        .user-logged-in {
-            color: #a3cf06;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-            flex: 1;
-            width: 100%;
-        }
-
-        #news-section {
-            background: linear-gradient(rgba(22, 32, 45, 0.8), #16202d);
-            border: 1px solid #2a475e;
-            padding: 20px;
-            border-radius: 4px;
-            margin-bottom: 30px;
-        }
-
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .news-card {
-            background-color: #0b1118;
-            border-left: 4px solid #66c0f4;
-            padding: 15px;
-            border-radius: 0 4px 4px 0;
-        }
-
-        .news-card h3 {
-            color: #fff;
-            font-size: 1rem;
-        }
-
-        .news-card p {
-            font-size: 0.85rem;
-            color: #8f98a0;
-        }
-
-        h2.section-title {
-            margin-bottom: 20px;
-            color: #fff;
-            border-bottom: 1px solid #2a475e;
-            padding-bottom: 5px;
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .game-card {
-            background-color: #16202d;
-            border: 1px solid rgba(0,0,0,0.4);
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .game-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .game-info {
-            padding: 15px;
-        }
-
-        .game-title {
-            font-size: 1.1rem;
-            color: #fff;
-        }
-
-        .game-price {
-            color: #66c0f4;
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .btn-buy {
-            background: linear-gradient(to right, #a3cf06 0%, #5c7e10 100%);
-            color: #fff;
-            border: none;
-            width: 100%;
-            padding: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-delete-game {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #d9534f;
-            color: white;
-            border: none;
-            padding: 5px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            display: none; 
-            z-index: 10;
-        }
-
-        /* MODAL DE LOGIN */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-
-        .modal-box {
-            background-color: #171a21;
-            border: 1px solid #316282;
-            padding: 30px;
-            border-radius: 4px;
-            width: 350px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-            position: relative;
-        }
-
-        .modal-box h3 {
-            color: #fff;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            text-align: center;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 10px; right: 15px;
-            color: #8f98a0;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        /* SECCIÓN MODO OWNER */
-        #panel-admin {
-            background-color: #2a475e;
-            border: 1px solid #66c0f4;
-            padding: 20px;
-            border-radius: 4px;
-            margin-top: 30px;
-            margin-bottom: 20px;
-            display: none; 
-        }
-
-        #panel-admin h2 {
-            color: #fff;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            background-color: #171a21;
-            border: 1px solid #4f94bc;
-            color: #fff;
-            border-radius: 3px;
-        }
-
-        .admin-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .btn-add {
-            background-color: #67c1f5; 
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 3px;
-        }
-
-        .btn-save-exit {
-            background-color: #5c7e10; 
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 3px;
-        }
-
-        /* ESTILOS NUEVOS PARA ROLES */
-        .btn-role-select {
-            background-color: #e5a93b;
-            color: #171a21;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 3px;
-        }
-
-        .sub-panel-role {
-            background-color: #171a21;
-            border: 1px dashed #e5a93b;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 4px;
-            display: none;
-        }
-
-        .sub-panel-role h3 {
-            color: #e5a93b;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .metric-card {
-            background-color: #20262e;
-            padding: 12px;
-            border-radius: 4px;
-            border-left: 4px solid #a3cf06;
-        }
-
-        .metric-card p {
-            font-size: 0.8rem;
-            color: #8f98a0;
-        }
-
-        .metric-card h4 {
-            font-size: 1.3rem;
-            color: #fff;
-            margin-top: 5px;
-        }
-
-        .security-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-
-        .security-table th, .security-table td {
-            border: 1px solid #2a475e;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .security-table th {
-            background-color: #20262e;
-            color: #66c0f4;
-        }
-
-        footer {
-            background-color: #171a21;
-            text-align: center;
-            padding: 25px;
-            border-top: 1px solid #1a1a1a;
-        }
-
-        footer p {
-            font-size: 0.9rem;
-            color: #556772;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-        }
-
-        #secret-owner-btn {
-            text-decoration: none;
-            font-size: 1.1rem;
-            cursor: pointer;
-            user-select: none;
-            opacity: 0.15; 
-            transition: opacity 0.2s;
-        }
-
-        #secret-owner-btn:hover { opacity: 1; }
-        #secret-owner-btn.blocked { cursor: not-allowed; opacity: 0.05; }
-    </style>
+    <title>WFGAMES | Tienda Oficial</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ENCABEZADO -->
-    <header>
-        <div class="header-container">
-            <a href="#" class="logo-brand" onclick="cambiarVista('tienda')">WF<span>games</span></a>
-            <nav>
-                <a id="nav-tienda" class="active" onclick="cambiarVista('tienda')">Tienda</a>
-                <a id="nav-biblioteca" onclick="cambiarVista('biblioteca')" style="display: none;">Mi Biblioteca</a>
-                <a href="#news-section">Noticias</a>
+    <!-- BARRA DE NAVEGACIÓN ESTILO STEAM -->
+    <header class="main-header">
+        <div class="nav-container">
+            <div class="logo">WFGAMES</div>
+            <nav class="nav-links">
+                <a href="#" class="active">TIENDA</a>
+                <a href="#">SOPORTE</a>
+                <a href="#" id="open-login-btn">INICIAR SESIÓN</a>
             </nav>
-            <div class="search-cart-container">
-                <div class="search-box">
-                    <input type="text" id="search-input" placeholder="buscar juego..." onkeyup="filtrarJuegos()">
-                </div>
-                <div id="auth-container">
-                    <button class="btn-login-nav" onclick="abrirModal()">Iniciar Sesión</button>
-                </div>
+            <div class="cart-status">
+                <span>Carrito: </span><span id="cart-count">0</span>
             </div>
         </div>
     </header>
 
-    <div class="container">
-        
-        <!-- NOTICIAS -->
-        <section id="news-section">
-            <h2 class="section-title">Últimas Noticias</h2>
-            <div class="news-grid">
-                <div class="news-card">
-                    <h3>🛡️ Servidor Protegido</h3>
-                    <p>Se ha implementado un firewall local y un sistema anti-fuerza bruta para blindar las cuentas.</p>
-                </div>
-                <div class="news-card">
-                    <h3>📊 Consola Operativa</h3>
-                    <p>Módulos de Auditoría de Cuentas y Control de Finanzas desplegados con éxito en la intranet.</p>
-                </div>
+    <!-- CONTENIDO PRINCIPAL / CATÁLOGO -->
+    <main class="store-container">
+        <section class="store-header">
+            <h1>Buscar en la tienda</h1>
+            <div class="search-bar-container">
+                <input type="text" id="search-input" placeholder="Introduce un término de búsqueda o una etiqueta...">
             </div>
         </section>
 
-        <!-- CONTENIDO PRINCIPAL -->
-        <main>
-            <h2 class="section-title" id="page-title">Juegos Destacados</h2>
-            <div class="games-grid" id="games-container"></div>
-        </main>
+        <!-- Grilla de Videojuegos -->
+        <section class="games-grid" id="games-grid">
+            <!-- Juego 1 -->
+            <div class="game-card">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=400" alt="Juego 1">
+                <div class="game-info">
+                    <h3>Cyber Action 2026</h3>
+                    <p class="tags">Acción, Ciencia Ficción</p>
+                    <div class="game-price-row">
+                        <span class="price">$59.99</span>
+                        <button class="btn-add-cart" data-id="1" data-name="Cyber Action 2026" data-price="59.99">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
 
-        <!-- PANEL OWNER -->
-        <section id="panel-admin">
-            <h2>🛠️ Modo Owner - Panel de Inventario</h2>
-            <form id="add-game-form">
-                <div class="form-group">
-                    <label for="title">Título del Videojuego:</label>
-                    <input type="text" id="title" required placeholder="Ej. Elden Ring">
+            <!-- Juego 2 -->
+            <div class="game-card">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=400" alt="Juego 2">
+                <div class="game-info">
+                    <h3>Dark Fantasy RPG</h3>
+                    <p class="tags">Rol, Mundo Abierto</p>
+                    <div class="game-price-row">
+                        <span class="price">$39.99</span>
+                        <button class="btn-add-cart" data-id="2" data-name="Dark Fantasy RPG" data-price="39.99">Añadir al carrito</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="price">Precio ($ USD):</label>
-                    <input type="number" id="price" step="0.01" required placeholder="Ej. 59.99">
+            </div>
+
+            <!-- Juego 3 -->
+            <div class="game-card">
+                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=400" alt="Juego 3">
+                <div class="game-info">
+                    <h3>Speed Drivers</h3>
+                    <p class="tags">Carreras, Simulación</p>
+                    <div class="game-price-row">
+                        <span class="price">$19.99</span>
+                        <button class="btn-add-cart" data-id="3" data-name="Speed Drivers" data-price="19.99">Añadir al carrito</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="image">Nombre de la imagen local:</label>
-                    <input type="text" id="image" required placeholder="Ej. eldenring.jpg">
+            </div>
+        </section>
+    </main>
+
+    <!-- MODAL DE LOGIN / AUTENTICACIÓN -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="login-card">
+            <div class="close-modal-container">
+                <button id="close-login-btn" class="btn-close">&times;</button>
+            </div>
+            
+            <div class="login-header">
+                <h2>INICIAR SESIÓN</h2>
+                <p>Ingresa a tu cuenta de WFGAMES</p>
+            </div>
+
+            <form id="form-login">
+                <div class="input-group">
+                    <label for="login-email">Correo o Usuario</label>
+                    <input type="text" id="login-email" required placeholder="Ingresa tu correo o usuario">
                 </div>
                 
-                <div class="admin-buttons">
-                    <button type="submit" class="btn-add">Añadir a la Lista</button>
-                    <!-- EL BOTÓN SOLICITADO -->
-                    <button type="button" class="btn-role-select" onclick="autenticarTrabajador()">💼 Asignar Rol de Trabajo</button>
-                    <button type="button" class="btn-save-exit" onclick="guardarYSalir()">💾 Guardar Todo y Regresar</button>
+                <div class="input-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
                 </div>
+                
+                <button type="submit" class="btn-primary">Entrar</button>
             </form>
 
-            <!-- SUBPANEL: TERMINAL DE SEGURIDAD (MUESTRA CLIENTES) -->
-            <div id="panel-security-role" class="sub-panel-role">
-                <h3>🔒 Terminal de Seguridad - Control de Credenciales de Clientes</h3>
-                <p style="font-size:0.85rem; color:#8f98a0; margin-bottom:10px;">Personal Autorizado: Lista de usuarios registrados en el servidor de autenticación local.</p>
-                <table class="security-table">
-                    <thead>
-                        <tr>
-                            <th>Usuario Registrado</th>
-                            <th>Hash de Contraseña</th>
-                            <th>Estado de Cuenta</th>
-                        </tr>
-                    </thead>
-                    <tbody id="security-users-list">
-                        <!-- Inyectado por JS -->
-                    </tbody>
-                </table>
+            <div class="auth-separator">
+                <span>O CONECTA CON</span>
             </div>
 
-            <!-- SUBPANEL: CONTABILIDAD (ESTADÍSTICAS ESPECÍFICAS) -->
-            <div id="panel-accounting-role" class="sub-panel-role">
-                <h3>📊 Balance General de Cuentas - Estadísticas de Ganancias</h3>
-                <div class="metrics-grid">
-                    <div class="metric-card" style="border-left-color: #66c0f4;">
-                        <p>Ingresos Brutos del Catálogo</p>
-                        <h4 id="metric-bruto">$0.00</h4>
-                    </div>
-                    <div class="metric-card">
-                        <p>Dinero Real Ganado (Ventas)</p>
-                        <h4 id="metric-ganado">$0.00</h4>
-                    </div>
-                    <div class="metric-card" style="border-left-color: #e5a93b;">
-                        <p>Copias Totales Canjeadas</p>
-                        <h4 id="metric-cantidad">0 u.</h4>
-                    </div>
-                    <div class="metric-card" style="border-left-color: #d9534f;">
-                        <p>Valor Medio por Videojuego</p>
-                        <h4 id="metric-medio">$0.00</h4>
-                    </div>
-                </div>
+            <button type="button" id="btn-google-auth" class="btn-google">
+                <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/web-24dp/logo_googleg_color_24dp.png" alt="Google">
+                Continuar con Google
+            </button>
+            
+            <div class="login-footer">
+                <a href="#" id="link-forgot-pass">¿Olvidaste tu contraseña o cuenta?</a>
             </div>
-        </section>
-
-    </div>
-
-    <!-- MODAL DE LOGIN -->
-    <div class="modal-overlay" id="login-modal">
-        <div class="modal-box">
-            <span class="modal-close" onclick="cerrarModal()">&times;</span>
-            <h3>Iniciar Sesión en WFgames</h3>
-            <form id="login-form">
-                <div class="form-group">
-                    <label style="color:#fff;">Nombre de Usuario:</label>
-                    <input type="text" id="username-input" required placeholder="Ej. GamerPro" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label style="color:#fff;">Contraseña:</label>
-                    <input type="password" id="password-input" required value="1234">
-                </div>
-                <button type="submit" class="btn-save-exit" style="width:100%; margin-top:10px;">Entrar a mi Cuenta</button>
-            </form>
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer>
-        <p>
-            &copy; 2026 WFgames. Todos los derechos reservados.
-            <a href="#" id="secret-owner-btn">🎮</a>
-        </p>
-    </footer>
+    <!-- PANEL ADMINISTRATIVO DE MODO DUEÑO (Oculto inicialmente) -->
+    <div id="admin-panel" class="modal-overlay">
+        <div class="admin-card">
+            <h2>PANEL DE CONTROL ADMINISTRATIVO</h2>
+            <p>Monitoreo de seguridad y estado financiero de WFGAMES</p>
+            <hr class="panel-divider">
+            <div class="panel-stats">
+                <div class="stat-box"><h4>Ventas del Día</h4><p>$0.00</p></div>
+                <div class="stat-box"><h4>Alertas de Seguridad</h4><p class="status-ok">Sistema Protegido</p></div>
+            </div>
+            <button id="close-admin-btn" class="btn-primary" style="background: #3a3a3a; margin-top: 20px;">Cerrar Panel</button>
+        </div>
+    </div>
 
-    <script>
-        function limpiarTexto(texto) {
-            if (typeof texto !== 'string') return texto;
-            return texto.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;").trim();
-        }
+    <!-- BOTÓN SECRETO PARA EL DUEÑO -->
+    <div class="admin-access-trigger">
+        <span id="secret-admin-trigger">🎮</span>
+    </div>
 
-        let juegos = JSON.parse(localStorage.getItem('wfgames_inventario')) || [];
-        let usuarioActivo = JSON.parse(sessionStorage.getItem('wfgames_usuario')) || null;
-        let bibliotecas = JSON.parse(localStorage.getItem('wfgames_bibliotecas')) || {};
-        
-        // Memoria interna de usuarios creados en esta sesión para el modulo de auditoría
-        let listaGlobalUsuarios = JSON.parse(localStorage.getItem('wfgames_registro_usuarios')) || ["GamerPro", "WfTimePlayer"];
-
-        let intentosFallidosAdmin = 0;
-        let adminBloqueado = false;
-
-        const gamesContainer = document.getElementById('games-container');
-        const secretBtn = document.getElementById('secret-owner-btn');
-        const panelAdmin = document.getElementById('panel-admin');
-        const addGameForm = document.getElementById('add-game-form');
-        const loginModal = document.getElementById('login-modal');
-        const loginForm = document.getElementById('login-form');
-        const authContainer = document.getElementById('auth-container');
-        
-        let modoOwnerActivo = false;
-        let vistaActual = 'tienda';
-
-        function renderJuegos(juegosFiltrados = juegos) {
-            gamesContainer.innerHTML = "";
-            const titleElement = document.getElementById('page-title');
-
-            if (vistaActual === 'biblioteca') {
-                titleElement.innerText = `Mi Biblioteca (${usuarioActivo})`;
-                let misJuegosIds = bibliotecas[usuarioActivo] || [];
-                let misJuegos = juegos.filter(j => misJuegosIds.includes(j.id));
-                
-                if(misJuegos.length === 0) {
-                    gamesContainer.innerHTML = "<p style='color: #8f98a0;'>Aún no tienes juegos en tu cuenta.</p>";
-                    return;
-                }
-                
-                misJuegos.forEach(juego => {
-                    const card = document.createElement('div');
-                    card.classList.add('game-card');
-                    card.innerHTML = `
-                        <img src="${juego.imagen}" alt="${juego.titulo}" onerror="this.src='https://via.placeholder.com/300x180/16202d/c7d5e0?text=Portada+Local'">
-                        <div class="game-info">
-                            <div class="game-title">${juego.titulo}</div>
-                            <button class="btn-buy" style="background:#214b6b;" onclick="alert('Iniciando ${juego.titulo}...')">🎮 Jugar ahora</button>
-                        </div>
-                    `;
-                    gamesContainer.appendChild(card);
-                });
-            } else {
-                titleElement.innerText = "Juegos Destacados";
-                if(juegosFiltrados.length === 0) {
-                    gamesContainer.innerHTML = "<p style='color: #8f98a0;'>No hay juegos disponibles.</p>";
-                    return;
-                }
-
-                juegosFiltrados.forEach(juego => {
-                    const card = document.createElement('div');
-                    card.classList.add('game-card');
-                    
-                    let yaComprado = usuarioActivo && (bibliotecas[usuarioActivo] || []).includes(juego.id);
-                    let botonAccion = yaComprado 
-                        ? `<button class="btn-buy" style="background:#316282; cursor:default;" disabled>Ya en tu Cuenta</button>`
-                        : `<button class="btn-buy" onclick="adquirirJuego(${juego.id})">Añadir a mi cuenta</button>`;
-
-                    card.innerHTML = `
-                        <button class="btn-delete-game" onclick="eliminarJuego(${juego.id})" style="display: ${modoOwnerActivo ? 'block' : 'none'}">X</button>
-                        <img src="${juego.imagen}" alt="${juego.titulo}" onerror="this.src='https://via.placeholder.com/300x180/16202d/c7d5e0?text=Portada+Local'">
-                        <div class="game-info">
-                            <div class="game-title">${juego.titulo}</div>
-                            <div class="game-price">${juego.precio === 0 ? 'Gratis' : '$' + juego.precio}</div>
-                            ${botonAccion}
-                        </div>
-                    `;
-                    gamesContainer.appendChild(card);
-                });
-            }
-        }
-
-        window.cambiarVista = function(destino) {
-            vistaActual = destino;
-            document.getElementById('nav-tienda').classList.toggle('active', destino === 'tienda');
-            document.getElementById('nav-biblioteca').classList.toggle('active', destino === 'biblioteca');
-            renderJuegos();
-        }
-
-        window.adquirirJuego = function(id) {
-            if (!usuarioActivo) {
-                alert("Seguridad: Debes iniciar sesión para realizar transacciones.");
-                abrirModal();
-                return;
-            }
-            if(!bibliotecas[usuarioActivo]) bibliotecas[usuarioActivo] = [];
-            
-            if (!bibliotecas[usuarioActivo].includes(id)) {
-                bibliotecas[usuarioActivo].push(id);
-                localStorage.setItem('wfgames_bibliotecas', JSON.stringify(bibliotecas));
-                alert("¡Videojuego añadido correctamente!");
-                renderJuegos();
-                // Si el panel contable está abierto, refresca las estadísticas al comprar
-                calcularEstadisticasContables();
-            }
-        }
-
-        window.abrirModal = function() { loginModal.style.visibility = "visible"; loginModal.style.opacity = "1"; }
-        window.cerrarModal = function() { loginModal.style.visibility = "hidden"; loginModal.style.opacity = "0"; }
-
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = limpiarTexto(document.getElementById('username-input').value);
-
-            if(username.length === 0) return;
-            
-            usuarioActivo = username;
-            sessionStorage.setItem('wfgames_usuario', JSON.stringify(usuarioActivo));
-            
-            if (!bibliotecas[usuarioActivo]) bibliotecas[usuarioActivo] = [];
-            if (!listaGlobalUsuarios.includes(username)) {
-                listaGlobalUsuarios.push(username);
-                localStorage.setItem('wfgames_registro_usuarios', JSON.stringify(listaGlobalUsuarios));
-            }
-
-            actualizarInterfazAuth();
-            cerrarModal();
-            renderJuegos();
-        });
-
-        window.cerrarSesion = function() {
-            usuarioActivo = null;
-            sessionStorage.removeItem('wfgames_usuario');
-            cambiarVista('tienda');
-            actualizarInterfazAuth();
-            renderJuegos();
-        }
-
-        function actualizarInterfazAuth() {
-            const navBiblioteca = document.getElementById('nav-biblioteca');
-            if (usuarioActivo) {
-                authContainer.innerHTML = `<span class="user-logged-in">👤 ${usuarioActivo}</span> <button class="btn-login-nav" style="background:#d9534f; margin-left:10px;" onclick="cerrarSesion()">Salir</button>`;
-                navBiblioteca.style.display = "block";
-            } else {
-                authContainer.innerHTML = `<button class="btn-login-nav" onclick="abrirModal()">Iniciar Sesión</button>`;
-                navBiblioteca.style.display = "none";
-            }
-        }
-
-        function filtrarJuegos() {
-            const query = limpiarTexto(document.getElementById('search-input').value.toLowerCase());
-            const filtrados = juegos.filter(juego => juego.titulo.toLowerCase().includes(query));
-            renderJuegos(filtrados);
-        }
-
-        // CONTROL ACCESO OWNER MASTER
-        secretBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (adminBloqueado) return;
-
-            const passwordInput = prompt("Introduce la contraseña de Owner:");
-            if (passwordInput === "wftime") {
-                intentosFallidosAdmin = 0;
-                modoOwnerActivo = true;
-                panelAdmin.style.display = "block"; 
-                cambiarVista('tienda');
-                panelAdmin.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                intentosFallidosAdmin++;
-                if (intentosFallidosAdmin >= 3) {
-                    adminBloqueado = true;
-                    secretBtn.classList.add('blocked');
-                    alert("🚨 ACCESO BLOQUEADO POR SEGURIDAD.");
-                    setTimeout(() => {
-                        adminBloqueado = false;
-                        intentosFallidosAdmin = 0;
-                        secretBtn.classList.remove('blocked');
-                    }, 30000);
-                }
-            }
-        });
-
-        // NUEVA FUNCIÓN: SISTEMA DE AUTENTICACIÓN MULTI-ROL (SEGURIDAD / CONTADOR)
-        window.autenticarTrabajador = function() {
-            const rolInput = prompt("Selecciona el tipo de trabajador:\n1. Seguridad\n2. Contador\n(Escribe el número correspondiente)");
-            
-            if (rolInput !== "1" && rolInput !== "2") {
-                alert("Rol inválido.");
-                return;
-            }
-
-            const claveRol = prompt("Introduce la contraseña del departamento de personal (Clave de Roles):");
-            
-            // Verificación estricta de la clave solicitada: 0987654321
-            if (claveRol === "0987654321") {
-                // Esconder ambos primero para alternar limpios
-                document.getElementById('panel-security-role').style.display = "none";
-                document.getElementById('panel-accounting-role').style.display = "none";
-
-                if (rolInput === "1") {
-                    alert("Acceso Concedido: Terminal de Seguridad Desbloqueada.");
-                    generarAuditoriaUsuarios();
-                    document.getElementById('panel-security-role').style.display = "block";
-                } else if (rolInput === "2") {
-                    alert("Acceso Concedido: Desplegando métricas financieras del departamento de contabilidad.");
-                    calcularEstadisticasContables();
-                    document.getElementById('panel-accounting-role').style.display = "block";
-                }
-            } else {
-                alert("🚨 Error de autenticación: Clave de departamento incorrecta.");
-            }
-        }
-
-        // LÓGICA DE AUDITORÍA: ROL DE SEGURIDAD
-        function generarAuditoriaUsuarios() {
-            const tbody = document.getElementById('security-users-list');
-            tbody.innerHTML = "";
-            
-            listaGlobalUsuarios.forEach(user => {
-                const tr = document.createElement('tr');
-                // Simulamos visualización controlada encriptada típica de seguridad de TI
-                tr.innerHTML = `
-                    <td style="font-weight:bold; color:#fff;">${user}</td>
-                    <td style="font-family:monospace; color:#a3cf06;">$argon2id$v=19$m=65536,t=3,p=4$d2Z0aW1l... (Encriptado Seguro)</td>
-                    <td><span style="background:#5c7e10; padding:2px 6px; border-radius:3px; font-size:0.75rem;">ACTIVO</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // LÓGICA DE AUDITORÍA: ROL DE CONTADOR (ESTADÍSTICAS FINANCIERAS)
-        function calcularEstadisticasContables() {
-            // 1. Ingresos Brutos del Catálogo (Suma del valor de todos los juegos creados)
-            let totalBruto = juegos.reduce((sum, j) => sum + j.price, 0);
-            
-            // 2. Dinero Real Ganado (Suma del valor de cada copia guardada por los clientes)
-            let dineroGanadoReal = 0;
-            let totalCopiasCanjeadas = 0;
-
-            Object.keys(bibliotecas).forEach(usuario => {
-                let juegosCompradosIds = bibliotecas[usuario] || [];
-                juegosCompradosIds.forEach(id => {
-                    let juegoEncontrado = juegos.find(j => j.id === id);
-                    if(juegoEncontrado) {
-                        dineroGanadoReal += juegoEncontrado.precio;
-                        totalCopiasCanjeadas++;
-                    }
-                });
-            });
-
-            // 3. Valor medio por artículo en inventario
-            let precioMedio = juegos.length > 0 ? (totalBruto / juegos.length) : 0;
-
-            // Inyectar valores formateados directamente en la UI del contador
-            document.getElementById('metric-bruto').innerText = `$${totalBruto.toFixed(2)}`;
-            document.getElementById('metric-ganado').innerText = `$${dineroGanadoReal.toFixed(2)}`;
-            document.getElementById('metric-cantidad').innerText = `${totalCopiasCanjeadas} u.`;
-            document.getElementById('metric-medio').innerText = `$${precioMedio.toFixed(2)}`;
-        }
-
-        addGameForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const nuevoJuego = {
-                id: Date.now(),
-                titulo: limpiarTexto(document.getElementById('title').value),
-                precio: parseFloat(document.getElementById('price').value),
-                imagen: limpiarTexto(document.getElementById('image').value)
-            };
-            juegos.push(nuevoJuego);
-            renderJuegos();
-            addGameForm.reset();
-            // Recalcular si el contador tiene el panel a la vista
-            calcularEstadisticasContables();
-        });
-
-        window.guardarYSalir = function() {
-            localStorage.setItem('wfgames_inventario', JSON.stringify(juegos));
-            modoOwnerActivo = false;
-            panelAdmin.style.display = "none"; 
-            document.getElementById('panel-security-role').style.display = "none";
-            document.getElementById('panel-accounting-role').style.display = "none";
-            renderJuegos();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            alert("Base de datos sincronizada.");
-        }
-
-        window.eliminarJuego = function(id) {
-            if(confirm("¿Eliminar registro?")) {
-                juegos = juegos.filter(juego => juego.id !== id);
-                renderJuegos();
-                calcularEstadisticasContables();
-            }
-        }
-
-        actualizarInterfazAuth();
-        renderJuegos();
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
