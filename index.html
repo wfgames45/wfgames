@@ -3,64 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WFGAMES - Tienda Oficial</title>
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="stylesheet" href="style.css">
+    <title>WFgames - Tienda de Videojuegos</title>
+    <style>
+        /* ESTILOS INSPIRADOS EN STEAM (MINIMALISTA Y OSCURO) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #1b2838; /* Azul oscuro clásico de Steam */
+            color: #c7d5e0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #171a21;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #1a1a1a;
+        }
+
+        header h1 {
+            color: #fff;
+            letter-spacing: 2px;
+            font-size: 1.8rem;
+        }
+
+        header h1 span {
+            color: #66c0f4; /* Azul brillante de acento */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* SECCIÓN MODO OWNER (OCULTA POR DEFECTO) */
+        #panel-admin {
+            background-color: #2a475e;
+            border: 1px solid #66c0f4;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            display: none; /* Escondido hasta que pongas la contraseña */
+        }
+
+        #panel-admin h2 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            background-color: #171a21;
+            border: 1px solid #4f94bc;
+            color: #fff;
+            border-radius: 3px;
+        }
+
+        .btn-add {
+            background-color: #a3cf06; /* Verde Steam */
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .btn-add:hover {
+            background-color: #bfff00;
+        }
+
+        /* CATÁLOGO DE JUEGOS */
+        h2.section-title {
+            margin-bottom: 20px;
+            color: #fff;
+            border-bottom: 1px solid #2a475e;
+            padding-bottom: 5px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background-color: #16202d;
+            border: 1px solid rgba(0,0,0,0.4);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 15px;
+        }
+
+        .game-title {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .game-price {
+            color: #66c0f4;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .btn-buy {
+            background: linear-gradient( to right, #47b2e8 0%, #1c5a7a 100%);
+            color: #fff;
+            border: none;
+            width: 100%;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        /* BOTÓN DE BORRAR JUEGO (SOLO VISIBLE EN MODO OWNER) */
+        .btn-delete-game {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: none; /* Se activa con el modo owner */
+        }
+
+        /* FOOTER CON EL BOTÓN OCULTO */
+        footer {
+            background-color: #171a21;
+            text-align: center;
+            padding: 25px;
+            margin-top: auto;
+            border-top: 1px solid #1a1a1a;
+            position: relative;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: #556772;
+        }
+
+        /* El botón oculto es un punto sutil cerca del texto de derechos reservados */
+        #secret-owner-btn {
+            color: #171a21; /* Mismo color de fondo del footer para camuflarse completamente */
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: default;
+            margin-left: 5px;
+            user-select: none;
+        }
+        
+        #secret-owner-btn:hover {
+            color: #2a475e; /* Se vuelve ligeramente visible solo si pasas el mouse por encima a propósito */
+        }
+    </style>
 </head>
 <body>
 
+    <!-- ENCABEZADO -->
     <header>
-        <div class="marca-contenedor">
-            <img src="logo.png" alt="Logo WFGAMES" class="logo-tienda">
-            <h1>WFGAMES</h1>
-        </div>
-        
-        <div class="buscador-contenedor">
-            <input type="text" id="barra-busqueda" placeholder="Buscar en la tienda..." oninput="filtrarJuegos()">
-        </div>
-        
-        <div class="menu-derecha">
-            <button id="btn-notificaciones" onclick="pedirNotificaciones()">Permitir Notificaciones</button>
-            <button id="btn-admin" onclick="autenticarOwner()">Modo Owner</button>
-            <div class="carrito-icono">
-                Carrito: $<span id="total-carrito">0.00</span>
-            </div>
+        <h1>WF<span>games</span></h1>
+        <div>
+            <span>🛒 Carrito (Simulación PayPal)</span>
         </div>
     </header>
 
-    <section class="seccion-noticias">
-        <h2>Noticias Destacadas</h2>
-        <div class="noticias-contenedor">
-            <div class="noticia-tarjeta">
-                <h4>Inauguración de la Plataforma</h4>
-                <p>WFGAMES inicia operaciones de forma oficial. Catálogo en constante actualización.</p>
-            </div>
-            <div class="noticia-tarjeta">
-                <h4>Panel de Administración</h4>
-                <p>Acceso exclusivo para el Owner. Carga de títulos optimizada mediante archivos locales.</p>
-            </div>
-        </div>
-    </section>
+    <div class="container">
+        
+        <!-- PANEL DE ADMINISTRACIÓN (MODO OWNER) -->
+        <section id="panel-admin">
+            <h2>🛠️ Modo Owner - Panel de Inventario</h2>
+            <form id="add-game-form">
+                <div class="form-group">
+                    <label for="title">Título del Videojuego:</label>
+                    <input type="text" id="title" required placeholder="Ej. Elden Ring">
+                </div>
+                <div class="form-group">
+                    <label for="price">Precio ($ USD):</label>
+                    <input type="number" id="price" step="0.01" required placeholder="Ej. 59.99">
+                </div>
+                <div class="form-group">
+                    <label for="image">Nombre de la imagen local (colócala en tu carpeta):</label>
+                    <input type="text" id="image" required placeholder="Ej. eldenring.jpg o imagen.png">
+                </div>
+                <button type="submit" class="btn-add">Añadir a la Tienda</button>
+            </form>
+        </section>
 
-    <h2 class="titulo-seccion">Todos los Juegos</h2>
-    <main class="tienda-contenedor" id="contenedor-juegos">
+        <!-- SECCIÓN DE LA TIENDA -->
+        <main>
+            <h2 class="section-title">Juegos Destacados</h2>
+            <div class="games-grid" id="games-container">
+                <!-- Los videojuegos se cargarán dinámicamente aquí con JavaScript -->
+            </div>
         </main>
 
-    <section id="panel-agregar-juego" style="display: none;">
-        <h2>Añadir Nuevo Título a WFGAMES</h2>
-        <div class="formulario">
-            <input type="text" id="nuevo-nombre" placeholder="Título del videojuego">
-            <input type="text" id="nueva-categoria" placeholder="Género / Etiquetas">
-            <input type="number" id="nuevo-precio" placeholder="Precio en USD ($)" step="0.01">
-            
-            <label for="nueva-imagen" class="btn-adjuntar-foto">📎 Adjuntar imagen de portada...</label>
-            <input type="file" id="nueva-imagen" accept="image/*" style="display: none;" onchange="actualizarNombreArchivo()">
-            <span id="nombre-archivo-seleccionado" style="font-size: 0.85rem; color: #a4d007; text-align: center;"></span>
-            
-            <button onclick="crearNuevoJuego()">Publicar Juego</button>
-        </div>
-    </section>
+    </div>
 
-    <script src="script.js"></script>
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p>&copy; 2026 WFgames. Todos los derechos reservados.<a href="#" id="secret-owner-btn">.</a></p>
+    </footer>
+
+    <!-- LÓGICA DE JAVASCRIPT -->
+    <script>
+        // 1. BASE DE DATOS INICIAL DE JUEGOS (Usa LocalStorage para recordar los nuevos)
+        let juegos = JSON.parse(localStorage.getItem('wfgames_inventario')) || [
+            { id: 1, titulo: "Counter-Strike 2", precio: 0.00, imagen: "cs2.jpg" },
+            { id: 2, titulo: "Resident Evil 4 Remake", precio: 59.99, imagen: "re4.jpg" },
+            { id: 3, titulo: "Cyberpunk 2077", precio: 49.99, imagen: "cyberpunk.jpg" }
+        ];
+
+        const gamesContainer = document.getElementById('games-container');
+        const secretBtn = document.getElementById('secret-owner-btn');
+        const panelAdmin = document.getElementById('panel-admin');
+        const addGameForm = document.getElementById('add-game-form');
+        
+        // Estado del Modo Owner
+        let modoOwnerActivo = false;
+
+        // 2. FUNCIÓN PARA PINTAR LOS JUEGOS EN LA PÁGINA
+        function renderJuegos() {
+            gamesContainer.innerHTML = "";
+            
+            juegos.forEach(juego => {
+                const card = document.createElement('div');
+                card.classList.add('game-card');
+                
+                // Si la imagen no existe localmente aún, muestra un marcador sutil
+                card.innerHTML = `
+                    <button class="btn-delete-game" onclick="eliminarJuego(${juego.id})" style="display: ${modoOwnerActivo ? 'block' : 'none'}">X</button>
+                    <img src="${juego.imagen}" alt="${juego.titulo}" onerror="this.src='https://via.placeholder.com/300x180/16202d/c7d5e0?text=Portada+Local'">
+                    <div class="game-info">
+                        <div class="game-title">${juego.titulo}</div>
+                        <div class="game-price">${juego.precio === 0 ? 'Gratis' : '$' + juego.precio}</div>
+                        <button class="btn-buy">Añadir al carrito</button>
+                    </div>
+                `;
+                gamesContainer.appendChild(card);
+            });
+        }
+
+        // 3. EVENTO PARA EL ACCESO SECRETOS Y VALIDACIÓN DE LA CONTRASEÑA "wftime"
+        secretBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Pide la clave
+            const passwordInput = prompt("Introduce la contraseña de Owner:");
+            
+            // VALIDACIÓN CON LA NUEVA CLAVE
+            if (passwordInput === "wftime") {
+                alert("¡Acceso verificado! Modo Owner Activado.");
+                modoOwnerActivo = true;
+                panelAdmin.style.display = "block"; // Desbloquea el formulario
+                renderJuegos(); // Vuelve a renderizar para que aparezcan los botones "X" de borrar
+                window.scrollTo({ top: 0, behavior: 'smooth' }); // Sube la pantalla al formulario
+            } else {
+                alert("Contraseña incorrecta. Acceso denegado.");
+            }
+        });
+
+        // 4. LOGICA DEL OWNER: AGREGAR UN JUEGO NUEVO
+        addGameForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const nuevoJuego = {
+                id: Date.now(), // ID único basado en el tiempo
+                titulo: document.getElementById('title').value,
+                precio: parseFloat(document.getElementById('price').value),
+                imagen: document.getElementById('image').value
+            };
+            
+            juegos.push(nuevoJuego);
+            localStorage.setItem('wfgames_inventario', JSON.stringify(juegos)); // Guarda en el navegador
+            
+            renderJuegos();
+            addGameForm.reset(); // Limpia los campos del formulario
+            alert("¡Juego agregado con éxito al catálogo!");
+        });
+
+        // 5. LOGICA DEL OWNER: ELIMINAR UN JUEGO
+        window.eliminarJuego = function(id) {
+            if(confirm("¿Seguro que quieres eliminar este juego del catálogo?")) {
+                juegos = juegos.filter(juego => juego.id !== id);
+                localStorage.setItem('wfgames_inventario', JSON.stringify(juegos));
+                renderJuegos();
+            }
+        }
+
+        // Ejecutar al cargar la página por primera vez
+        renderJuegos();
+    </script>
 </body>
 </html>
